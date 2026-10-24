@@ -104,6 +104,36 @@ pub fn is_active() -> bool {
     ACTIVE.load(Ordering::Acquire)
 }
 
+/// Recording, or holding text that hasn't been pasted yet.
+pub fn is_busy() -> bool {
+    ACTIVE.load(Ordering::Acquire) || OPEN.load(Ordering::Acquire)
+}
+
+/// The app is quitting with words heard but not pasted: they go on the
+/// clipboard and into unsaved-dictation.txt, so a quit never loses them.
+pub fn keep_on_exit(app: &AppHandle) {
+    let text = tidy(&session_text());
+    if text.is_empty() {
+        return;
+    }
+    warn!("dictation: quitting with {} chars not pasted; kept on the clipboard and in unsaved-dictation.txt", text.chars().count());
+    if let Ok(dir) = app.path().app_data_dir() {
+        let stamp = chrono::Local::now().format("%a %e %b %Y %H:%M");
+        let _ = std::fs::write(dir.join("unsaved-dictation.txt"), format!("{stamp}\n\n{text}\n"));
+    }
+    #[cfg(target_os = "macos")]
+    {
+        use objc2_app_kit::{NSPasteboard, NSPasteboardTypeString};
+        use objc2_foundation::NSString;
+        #[allow(unused_unsafe)]
+        unsafe {
+            let pb = NSPasteboard::generalPasteboard();
+            pb.clearContents();
+            pb.setString_forType(&NSString::from_str(&text), NSPasteboardTypeString);
+        }
+    }
+}
+
 #[derive(Clone, Serialize, Type)]
 pub struct DictationState {
     pub phase: String,
@@ -436,14 +466,8 @@ pub async fn dictation_finish(app: AppHandle, text: String, proofread: bool) -> 
     // The words the model always mishears are fixed first (sound_alikes.txt),
     // so the check starts from the right names.
     let fixed = crate::sound_alikes::fix(&app, &raw);
-    // Most sentences were checked while he talked (precheck.rs); only the rest
-    // waits now. A part whose check fails goes in as heard.
-    let output = if proofread && crate::proofread::engine(&app) != "none" {
-        set_phase(&app, "proofreading");
-        crate::precheck::check(&app, &fixed).await
-    } else {
-        fixed.clone()
-    };
+    // Sentences checked while he talked are used; nothing waits on a check.
+    let output = if proofread { crate::precheck::assemble(&fixed) } else { fixed.clone() };
     let proofread = output != raw;
     save_history(&app, &raw, proofread.then_some(output.as_str()));
     close(&app);

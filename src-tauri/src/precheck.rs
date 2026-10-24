@@ -1,19 +1,20 @@
 //! The dictation's check, done a sentence at a time while Gus is still talking,
-//! so the key that ends the recording only waits for the last sentence.
+//! so the key that ends the recording never waits for it: what was checked by
+//! then is used, the rest goes in as heard (after the sound-alike fixes).
 //!
 //! As the editor's text grows, every finished sentence (it ends in . ? or !)
 //! that hasn't been sent yet goes to a single background worker, in order, with
 //! the language the dictation started in. Answers are kept against the exact
 //! sentences they came from. At the end the final text is split the same way:
 //! runs of sentences that were checked word for word take the checked text, and
-//! whatever is left (the last sentence, anything Gus edited) is checked then.
-//! The cache is keyed by the exact text, so a sentence that changed is simply
-//! checked again; it can cost time, never correctness.
+//! whatever is left (the last sentence, anything Gus edited) goes in as it is.
+//! Gus asked for the paste to be as instant as possible (25 Oct 2026), and the
+//! on-device check rarely changed a word, so it is never waited on.
 
 use log::{info, warn};
 use std::sync::mpsc::{self, Sender};
 use std::sync::{Mutex, OnceLock};
-use std::time::{Duration, Instant};
+use std::time::Instant;
 use tauri::AppHandle;
 
 struct Group {
@@ -146,64 +147,27 @@ pub fn feed(app: &AppHandle, text: &str) {
     }
 }
 
-enum Part {
-    Checked(String),
-    Run(Vec<String>),
-}
-
-/// The final text, checked: earlier sentences from what was done while he
-/// talked, the rest now. A failed check leaves that part as heard.
-pub async fn check(app: &AppHandle, text: &str) -> String {
-    let started = Instant::now();
-    // An answer on its way is worth a short wait; it is usually most of the text.
-    while *IN_FLIGHT.lock().unwrap() > 0 && started.elapsed() < Duration::from_millis(2500) {
-        tokio::time::sleep(Duration::from_millis(40)).await;
-    }
-    let language = language_of(text).or_else(|| crate::proofread::starting_language(text));
+/// The final text at once: sentences checked while he talked take their
+/// checked text, everything else goes in as it is. Never waits.
+pub fn assemble(text: &str) -> String {
     if text.contains('\n') {
-        return crate::proofread::proofread_in(app, text, language).await.unwrap_or_else(|_| text.to_string());
+        return text.to_string();
     }
     let (sentences, _) = split(text);
-    let mut parts: Vec<Part> = Vec::new();
-    {
-        let groups = GROUPS.lock().unwrap();
-        let mut i = 0;
-        while i < sentences.len() {
-            let hit = groups
-                .iter()
-                .filter(|g| sentences[i..].starts_with(&g.raw))
-                .max_by_key(|g| g.raw.len());
-            if let Some(g) = hit {
-                parts.push(Part::Checked(g.checked.clone()));
-                i += g.raw.len();
-            } else {
-                match parts.last_mut() {
-                    Some(Part::Run(run)) => run.push(sentences[i].clone()),
-                    _ => parts.push(Part::Run(vec![sentences[i].clone()])),
-                }
-                i += 1;
-            }
+    let groups = GROUPS.lock().unwrap();
+    let (mut out, mut reused, mut i) = (Vec::new(), 0, 0);
+    while i < sentences.len() {
+        let hit = groups.iter().filter(|g| sentences[i..].starts_with(&g.raw)).max_by_key(|g| g.raw.len());
+        if let Some(g) = hit {
+            out.push(g.checked.clone());
+            reused += g.raw.len();
+            i += g.raw.len();
+        } else {
+            out.push(sentences[i].clone());
+            i += 1;
         }
     }
-    let reused = parts.iter().filter(|p| matches!(p, Part::Checked(_))).count();
-    let mut out = Vec::new();
-    for part in parts {
-        match part {
-            Part::Checked(t) => out.push(t),
-            Part::Run(run) => {
-                let raw = run.join(" ");
-                match crate::proofread::proofread_in(app, &raw, language).await {
-                    Ok(t) if !t.trim().is_empty() => out.push(t),
-                    Ok(_) => out.push(raw),
-                    Err(e) => {
-                        warn!("dictation: check failed, this part goes in as heard: {e}");
-                        out.push(raw);
-                    }
-                }
-            }
-        }
-    }
-    info!("dictation: checked in {:?} ({reused} parts done while talking)", started.elapsed());
+    info!("dictation: {reused} of {} sentences checked while talking", sentences.len());
     out.join(" ")
 }
 

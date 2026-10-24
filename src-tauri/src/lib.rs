@@ -1252,6 +1252,7 @@ pub fn run(cli_args: CliArgs) {
         }
         // Teardown transcribe.cpp before exit
         tauri::RunEvent::Exit => {
+            dictation::keep_on_exit(app);
             if let Some(tm) = app.try_state::<Arc<TranscriptionManager>>() {
                 let _ = tm.unload_model();
             }

@@ -267,6 +267,11 @@ fn handle(app: &AppHandle, id: u64, msg: Value) {
             }
             send(id, &json!({ "type": "vpn", "phase": crate::vpn::describe() }));
         }
+        "busy" => {
+            // The install script asks before it quits the app, so an update
+            // never cuts a dictation or a Cast short.
+            send(id, &json!({ "type": "busy", "dictating": crate::dictation::is_busy(), "casting": crate::cast::is_recording() }));
+        }
         "ext-recording" => {
             // The extension reports its own tab recording starting or stopping.
             let _ = app.emit("extension-recording", msg.get("on").and_then(Value::as_bool).unwrap_or(false));

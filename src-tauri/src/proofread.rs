@@ -122,10 +122,6 @@ fn keep(heard: &str, checked: &str, language: Option<&str>) -> Result<(), String
     Ok(())
 }
 
-pub async fn proofread(app: &AppHandle, text: &str) -> Result<String, String> {
-    proofread_in(app, text, starting_language(text)).await
-}
-
 /// The check, held to a language decided elsewhere (the dictation's first words).
 pub async fn proofread_in(app: &AppHandle, text: &str, language: Option<&'static str>) -> Result<String, String> {
     let text = text.trim();
