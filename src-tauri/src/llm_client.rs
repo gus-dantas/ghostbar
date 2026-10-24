@@ -143,13 +143,13 @@ fn build_headers(provider: &PostProcessProvider, api_key: &str) -> Result<Header
     headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
     headers.insert(
         REFERER,
-        HeaderValue::from_static("https://github.com/gus-dantas/gus-assistant"),
+        HeaderValue::from_static("https://github.com/gus-dantas/ghostbar"),
     );
     headers.insert(
         USER_AGENT,
-        HeaderValue::from_static("GusAssistant/1.0 (+https://github.com/gus-dantas/gus-assistant)"),
+        HeaderValue::from_static("Ghostbar/1.1 (+https://github.com/gus-dantas/ghostbar)"),
     );
-    headers.insert("X-Title", HeaderValue::from_static("Gus Assistant"));
+    headers.insert("X-Title", HeaderValue::from_static("Ghostbar"));
 
     // Provider-specific auth headers
     if !api_key.is_empty() {

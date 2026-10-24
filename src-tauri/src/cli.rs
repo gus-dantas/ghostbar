@@ -2,7 +2,7 @@ use clap::Parser;
 use std::path::PathBuf;
 
 #[derive(Parser, Debug, Clone, Default)]
-#[command(name = "gus-assistant", about = "Gus Assistant")]
+#[command(name = "ghostbar", about = "Ghostbar")]
 pub struct CliArgs {
     /// Start with the main window hidden
     #[arg(long)]

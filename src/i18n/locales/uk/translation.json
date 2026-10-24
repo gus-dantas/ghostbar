@@ -101,7 +101,7 @@
     },
     "permissions": {
       "title": "Потрібні дозволи",
-      "description": "Gus Assistant потребує деяких дозволів для коректної роботи.",
+      "description": "Ghostbar потребує деяких дозволів для коректної роботи.",
       "microphone": {
         "title": "Доступ до мікрофона",
         "description": "Потрібен для прослуховування вашого голосу для транскрипції."
@@ -226,7 +226,7 @@
       "searchPlaceholder": "Пошук моделей за назвою…",
       "rescan": {
         "label": "Пересканувати",
-        "tooltip": "Пересканувати моделі, додані до папки моделей або кешу Hugging Face поза межами Gus Assistant"
+        "tooltip": "Пересканувати моделі, додані до папки моделей або кешу Hugging Face поза межами Ghostbar"
       }
     },
     "sound": {
@@ -293,11 +293,11 @@
       },
       "autostart": {
         "label": "Запуск при старті системи",
-        "description": "Автоматично запускати Gus Assistant при вході в систему"
+        "description": "Автоматично запускати Ghostbar при вході в систему"
       },
       "showTrayIcon": {
         "label": "Показати значок у треї",
-        "description": "Відображати значок Gus Assistant у системному треї."
+        "description": "Відображати значок Ghostbar у системному треї."
       },
       "overlay": {
         "style": {
@@ -502,8 +502,8 @@
       },
       "updateChecks": {
         "label": "Перевірка оновлень",
-        "description": "Автоматично перевіряти наявність нових версій Gus Assistant",
-        "lockedDescription": "Вимкнено системною конфігурацією (GUS_ASSISTANT_DISABLE_UPDATER)"
+        "description": "Автоматично перевіряти наявність нових версій Ghostbar",
+        "lockedDescription": "Вимкнено системною конфігурацією (GHOSTBAR_DISABLE_UPDATER)"
       },
       "soundTheme": {
         "label": "Звукова тема",
@@ -580,7 +580,7 @@
       },
       "keyboardDiagnostic": {
         "title": "Діагностика клавіатури",
-        "description": "Перевіряє, чи доходять події клавіатури до Gus Assistant. Записується лише кількість подій — ніколи те, які клавіші ви натискаєте.",
+        "description": "Перевіряє, чи доходять події клавіатури до Ghostbar. Записується лише кількість подій — ніколи те, які клавіші ви натискаєте.",
         "run": "Запустити 10-секундну діагностику",
         "running": "Прослуховування… натисніть свою комбінацію кілька разів (наприклад, Option+Space)",
         "secureInputLabel": "Secure Input",
@@ -594,7 +594,7 @@
         "mouse": "Миша",
         "verdictBlocked": "Secure Input блокує події клавіш — комбінації зі звичайною клавішею не працюватимуть, доки це не буде усунуто.",
         "verdictSuspicious": "Події модифікаторів надходять, а події клавіш — ні: щось пригнічує клавіші, хоча Secure Input позначено як вимкнений. Будь ласка, повідомте про це на GitHub.",
-        "verdictOk": "Події клавіш надходять до Gus Assistant нормально.",
+        "verdictOk": "Події клавіш надходять до Ghostbar нормально.",
         "verdictNoEvents": "Подій не зафіксовано — ви натискали клавіші під час тесту?",
         "failed": "Не вдалося виконати діагностику: {{error}}"
       },
@@ -617,11 +617,11 @@
       "title": "Інфо",
       "version": {
         "title": "Версія",
-        "description": "Поточна версія Gus Assistant"
+        "description": "Поточна версія Ghostbar"
       },
       "appDataDirectory": {
         "title": "Папка даних програми",
-        "description": "Розташування даних Gus Assistant"
+        "description": "Розташування даних Ghostbar"
       },
       "sourceCode": {
         "title": "Вихідний код",
@@ -630,7 +630,7 @@
       },
       "supportDevelopment": {
         "title": "Підтримати розробку",
-        "description": "Допоможіть нам продовжувати розвивати Gus Assistant",
+        "description": "Ghostbar includes code by CJ Pais (MIT licence)",
         "button": "Підтримати"
       },
       "acknowledgments": {
@@ -638,12 +638,12 @@
         "ggml": {
           "title": "ggml",
           "description": "Високопродуктивний інференс моделі автоматичного розпізнавання мовлення Whisper від OpenAI",
-          "details": "Gus Assistant використовує ggml для швидкої локальної обробки мовлення в текст. Дякуємо за чудову роботу Георгію Герганову та контриб'юторам."
+          "details": "Ghostbar використовує ggml для швидкої локальної обробки мовлення в текст. Дякуємо за чудову роботу Георгію Герганову та контриб'юторам."
         }
       },
       "whatsNewUpdates": {
         "label": "Показувати новини",
-        "description": "Показувати примітки до випуску після оновлень Gus Assistant"
+        "description": "Показувати примітки до випуску після оновлень Ghostbar"
       }
     }
   },
@@ -672,7 +672,7 @@
     "noOptionsFound": "Опцій не знайдено"
   },
   "accessibility": {
-    "permissionsDescription": "Gus Assistant потребує дозволи доступності для введення транскрибованого тексту.",
+    "permissionsDescription": "Ghostbar потребує дозволи доступності для введення транскрибованого тексту.",
     "openSettings": "Відкрити Системні налаштування"
   },
   "errors": {
@@ -695,11 +695,11 @@
   },
   "appLanguage": {
     "title": "Мова інтерфейсу",
-    "description": "Змінити мову інтерфейсу Gus Assistant"
+    "description": "Змінити мову інтерфейсу Ghostbar"
   },
   "theme": {
     "title": "Тема застосунку",
-    "description": "Виберіть, чи має Gus Assistant слідувати темі системи, чи залишатися світлою або темною",
+    "description": "Виберіть, чи має Ghostbar слідувати темі системи, чи залишатися світлою або темною",
     "options": {
       "system": "Системна",
       "light": "Світла",
@@ -711,7 +711,7 @@
     "processing": "Постобробка..."
   },
   "whatsNew": {
-    "title": "Нове в Gus Assistant v{{version}}"
+    "title": "Нове в Ghostbar v{{version}}"
   },
   "secureInput": {
     "blockedWithCulprit_one": "{{name}} може блокувати 1 комбінацію клавіш",

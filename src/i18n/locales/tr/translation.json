@@ -101,7 +101,7 @@
     },
     "permissions": {
       "title": "İzinler Gerekli",
-      "description": "Gus Assistant'nin düzgün çalışabilmesi için birkaç izne ihtiyacı var.",
+      "description": "Ghostbar'nin düzgün çalışabilmesi için birkaç izne ihtiyacı var.",
       "microphone": {
         "title": "Mikrofon Erişimi",
         "description": "Sesinizi transkripsiyon için alabilmek için gereklidir."
@@ -175,13 +175,13 @@
       "searchPlaceholder": "Modelleri ada göre ara…",
       "rescan": {
         "label": "Yeniden Tara",
-        "tooltip": "Gus Assistant dışında modeller klasörüne veya Hugging Face önbelleğine eklenen modelleri yeniden tara"
+        "tooltip": "Ghostbar dışında modeller klasörüne veya Hugging Face önbelleğine eklenen modelleri yeniden tara"
       }
     },
     "general": {
       "title": "Genel",
       "shortcut": {
-        "title": "Gus Assistant Kısayolları",
+        "title": "Ghostbar Kısayolları",
         "description": "Sesle yazma kaydını başlatmak için klavye kısayollarını yapılandırın",
         "loading": "Kısayollar yükleniyor...",
         "none": "Kısayol yapılandırılmadı",
@@ -293,11 +293,11 @@
       },
       "autostart": {
         "label": "Başlangıçta Çalıştır",
-        "description": "Bilgisayara giriş yaptığınızda Gus Assistant otomatik olarak başlatılır."
+        "description": "Bilgisayara giriş yaptığınızda Ghostbar otomatik olarak başlatılır."
       },
       "showTrayIcon": {
         "label": "Tepsi Simgesini Göster",
-        "description": "Gus Assistant simgesini sistem tepsisinde göster."
+        "description": "Ghostbar simgesini sistem tepsisinde göster."
       },
       "overlay": {
         "style": {
@@ -502,8 +502,8 @@
       },
       "updateChecks": {
         "label": "Güncellemeleri Kontrol Et",
-        "description": "Gus Assistant için yeni sürümleri otomatik olarak kontrol eder",
-        "lockedDescription": "Sistem yapılandırması tarafından devre dışı bırakıldı (GUS_ASSISTANT_DISABLE_UPDATER)"
+        "description": "Ghostbar için yeni sürümleri otomatik olarak kontrol eder",
+        "lockedDescription": "Sistem yapılandırması tarafından devre dışı bırakıldı (GHOSTBAR_DISABLE_UPDATER)"
       },
       "soundTheme": {
         "label": "Ses Teması",
@@ -580,7 +580,7 @@
       },
       "keyboardDiagnostic": {
         "title": "Klavye Tanılaması",
-        "description": "Klavye olaylarının Gus Assistant'ye ulaşıp ulaşmadığını denetler. Yalnızca olay sayıları kaydedilir — hangi tuşlara bastığınız asla kaydedilmez.",
+        "description": "Klavye olaylarının Ghostbar'ye ulaşıp ulaşmadığını denetler. Yalnızca olay sayıları kaydedilir — hangi tuşlara bastığınız asla kaydedilmez.",
         "run": "10 sn'lik tanılamayı çalıştır",
         "running": "Dinleniyor… kısayolunuza birkaç kez basın (ör. Option+Space)",
         "secureInputLabel": "Secure Input",
@@ -594,7 +594,7 @@
         "mouse": "Fare",
         "verdictBlocked": "Secure Input tuş olaylarını engelliyor — normal tuş içeren kısayollar bu sorun çözülene kadar çalışamaz.",
         "verdictSuspicious": "Değiştirici olayları geldi ancak hiç tuş olayı gelmedi — Secure Input devre dışı görünmesine rağmen bir şey tuşları bastırıyor. Lütfen bunu GitHub'da bildirin.",
-        "verdictOk": "Tuş olayları Gus Assistant'ye normal şekilde ulaşıyor.",
+        "verdictOk": "Tuş olayları Ghostbar'ye normal şekilde ulaşıyor.",
         "verdictNoEvents": "Hiç olay yakalanmadı — test sırasında herhangi bir tuşa bastınız mı?",
         "failed": "Tanılama başarısız: {{error}}"
       },
@@ -617,11 +617,11 @@
       "title": "Hakkında",
       "version": {
         "title": "Sürüm",
-        "description": "Gus Assistant'nin mevcut sürümü"
+        "description": "Ghostbar'nin mevcut sürümü"
       },
       "appDataDirectory": {
         "title": "Uygulama Veri Dizini",
-        "description": "Gus Assistant'nin verilerini sakladığı konum"
+        "description": "Ghostbar'nin verilerini sakladığı konum"
       },
       "sourceCode": {
         "title": "Kaynak Kodu",
@@ -630,7 +630,7 @@
       },
       "supportDevelopment": {
         "title": "Geliştirmeyi Destekle",
-        "description": "Gus Assistant'yi geliştirmeye devam etmemize yardımcı olun",
+        "description": "Ghostbar includes code by CJ Pais (MIT licence)",
         "button": "Bağış Yap"
       },
       "acknowledgments": {
@@ -638,12 +638,12 @@
         "ggml": {
           "title": "ggml",
           "description": "Cihaz üzerinde makine öğrenmesi çıkarımı için yüksek performanslı tensör kütüphanesi",
-          "details": "Gus Assistant'nin yerel konuşmadan metne dönüştürme özelliği transcribe.cpp ve ggml üzerine kuruludur. Georgi Gerganov'a ve katkıda bulunanlara harika çalışmaları için teşekkür ederiz."
+          "details": "Ghostbar'nin yerel konuşmadan metne dönüştürme özelliği transcribe.cpp ve ggml üzerine kuruludur. Georgi Gerganov'a ve katkıda bulunanlara harika çalışmaları için teşekkür ederiz."
         }
       },
       "whatsNewUpdates": {
         "label": "Yenilikleri Göster",
-        "description": "Gus Assistant güncellemelerinden sonra sürüm notlarını göster"
+        "description": "Ghostbar güncellemelerinden sonra sürüm notlarını göster"
       }
     }
   },
@@ -672,7 +672,7 @@
     "noOptionsFound": "Seçenek bulunamadı"
   },
   "accessibility": {
-    "permissionsDescription": "Gus Assistant, transkribe edilen metni yazabilmek için erişilebilirlik izinlerine ihtiyaç duyar.",
+    "permissionsDescription": "Ghostbar, transkribe edilen metni yazabilmek için erişilebilirlik izinlerine ihtiyaç duyar.",
     "openSettings": "Sistem Ayarlarını Aç"
   },
   "errors": {
@@ -695,11 +695,11 @@
   },
   "appLanguage": {
     "title": "Uygulama Dili",
-    "description": "Gus Assistant arayüzünün dilini değiştirin"
+    "description": "Ghostbar arayüzünün dilini değiştirin"
   },
   "theme": {
     "title": "Uygulama Teması",
-    "description": "Gus Assistant'nin sistem temasını izlemesini ya da açık veya koyu kalmasını seçin",
+    "description": "Ghostbar'nin sistem temasını izlemesini ya da açık veya koyu kalmasını seçin",
     "options": {
       "system": "Sistem",
       "light": "Açık",
@@ -711,7 +711,7 @@
     "processing": "İşleniyor..."
   },
   "whatsNew": {
-    "title": "Gus Assistant v{{version}} yenilikleri"
+    "title": "Ghostbar v{{version}} yenilikleri"
   },
   "secureInput": {
     "blockedWithCulprit_one": "{{name}} 1 kısayolu engelliyor olabilir",

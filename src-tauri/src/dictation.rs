@@ -235,7 +235,7 @@ fn build_panel(app: &AppHandle, visible: bool) -> Result<tauri_nspanel::PanelHan
     let (x, y) = position(app);
     PanelBuilder::<_, DictationPanel>::new(app, LABEL)
         .url(WebviewUrl::App("src/dictation/index.html".into()))
-        .title("Gus Assistant Dictation")
+        .title("Ghostbar Dictation")
         .position(tauri::Position::Logical(tauri::LogicalPosition { x, y }))
         .size(tauri::Size::Logical(tauri::LogicalSize { width: SIZE.0, height: SIZE.1 }))
         .level(PanelLevel::Floating)
@@ -274,7 +274,7 @@ fn show_panel(app: &AppHandle) {
             return;
         }
         let _ = tauri::WebviewWindowBuilder::new(app, LABEL, WebviewUrl::App("src/dictation/index.html".into()))
-            .title("Gus Assistant Dictation")
+            .title("Ghostbar Dictation")
             .position(x, y)
             .inner_size(SIZE.0, SIZE.1)
             .decorations(false)
@@ -344,7 +344,7 @@ fn save_history(app: &AppHandle, raw: &str, proofread: Option<&str>) {
         raw.to_string(),
         proofread.is_some(),
         proofread.map(str::to_string),
-        proofread.map(|_| "Proofread (Gus Assistant)".to_string()),
+        proofread.map(|_| "Proofread (Ghostbar)".to_string()),
     ) {
         warn!("dictation: history not saved: {e}");
     }

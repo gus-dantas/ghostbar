@@ -101,7 +101,7 @@
     },
     "permissions": {
       "title": "Behörigheter krävs",
-      "description": "Gus Assistant behöver ett par behörigheter för att fungera korrekt.",
+      "description": "Ghostbar behöver ett par behörigheter för att fungera korrekt.",
       "microphone": {
         "title": "Mikrofonåtkomst",
         "description": "Krävs för att höra din röst för transkription."
@@ -161,7 +161,7 @@
     "general": {
       "title": "Allmänt",
       "shortcut": {
-        "title": "Gus Assistant-kortkommandon",
+        "title": "Ghostbar-kortkommandon",
         "description": "Konfigurera kortkommandon för att starta tal-till-text-inspelning",
         "loading": "Laddar kortkommandon...",
         "none": "Inga kortkommandon konfigurerade",
@@ -226,7 +226,7 @@
       "searchPlaceholder": "Sök modeller efter namn…",
       "rescan": {
         "label": "Skanna om",
-        "tooltip": "Skanna om efter modeller som lagts till i modellmappen eller Hugging Face-cachen utanför Gus Assistant"
+        "tooltip": "Skanna om efter modeller som lagts till i modellmappen eller Hugging Face-cachen utanför Ghostbar"
       }
     },
     "sound": {
@@ -293,11 +293,11 @@
       },
       "autostart": {
         "label": "Starta vid uppstart",
-        "description": "Starta Gus Assistant automatiskt när du loggar in på din dator."
+        "description": "Starta Ghostbar automatiskt när du loggar in på din dator."
       },
       "showTrayIcon": {
         "label": "Visa ikon i systemfältet",
-        "description": "Visa Gus Assistant-ikonen i systemfältet."
+        "description": "Visa Ghostbar-ikonen i systemfältet."
       },
       "overlay": {
         "style": {
@@ -502,8 +502,8 @@
       },
       "updateChecks": {
         "label": "Sök efter uppdateringar",
-        "description": "Sök automatiskt efter nya versioner av Gus Assistant",
-        "lockedDescription": "Inaktiverad av systemkonfiguration (GUS_ASSISTANT_DISABLE_UPDATER)"
+        "description": "Sök automatiskt efter nya versioner av Ghostbar",
+        "lockedDescription": "Inaktiverad av systemkonfiguration (GHOSTBAR_DISABLE_UPDATER)"
       },
       "soundTheme": {
         "label": "Ljudtema",
@@ -580,7 +580,7 @@
       },
       "keyboardDiagnostic": {
         "title": "Tangentbordsdiagnostik",
-        "description": "Kontrollerar om tangentbordshändelser når Gus Assistant. Endast antalet händelser registreras — aldrig vilka tangenter du trycker på.",
+        "description": "Kontrollerar om tangentbordshändelser når Ghostbar. Endast antalet händelser registreras — aldrig vilka tangenter du trycker på.",
         "run": "Kör 10 s diagnostik",
         "running": "Lyssnar… tryck på ditt kortkommando några gånger (t.ex. Option+Space)",
         "secureInputLabel": "Secure Input",
@@ -594,7 +594,7 @@
         "mouse": "Mus",
         "verdictBlocked": "Secure Input blockerar tangenthändelser — kortkommandon med en vanlig tangent kan inte fungera förrän det är löst.",
         "verdictSuspicious": "Modifierarhändelser kom fram men inga tangenthändelser — något undertrycker tangenter trots att Secure Input rapporteras som inaktiverat. Rapportera gärna detta på GitHub.",
-        "verdictOk": "Tangenthändelser når Gus Assistant som vanligt.",
+        "verdictOk": "Tangenthändelser når Ghostbar som vanligt.",
         "verdictNoEvents": "Inga händelser fångades — tryckte du på några tangenter under testet?",
         "failed": "Diagnostiken misslyckades: {{error}}"
       },
@@ -617,11 +617,11 @@
       "title": "Om",
       "version": {
         "title": "Version",
-        "description": "Nuvarande version av Gus Assistant"
+        "description": "Nuvarande version av Ghostbar"
       },
       "appDataDirectory": {
         "title": "Mapp för appdata",
-        "description": "Plats där Gus Assistant lagrar sina data"
+        "description": "Plats där Ghostbar lagrar sina data"
       },
       "sourceCode": {
         "title": "Källkod",
@@ -630,7 +630,7 @@
       },
       "supportDevelopment": {
         "title": "Stöd utvecklingen",
-        "description": "Hjälp oss att fortsätta bygga Gus Assistant",
+        "description": "Ghostbar includes code by CJ Pais (MIT licence)",
         "button": "Donera"
       },
       "acknowledgments": {
@@ -638,12 +638,12 @@
         "ggml": {
           "title": "ggml",
           "description": "Högpresterande inferens av OpenAI:s Whisper-modell för automatisk taligenkänning",
-          "details": "Gus Assistant använder ggml för snabb, lokal tal-till-text-behandling. Tack till det fantastiska arbete som utförts av Georgi Gerganov med medarbetare."
+          "details": "Ghostbar använder ggml för snabb, lokal tal-till-text-behandling. Tack till det fantastiska arbete som utförts av Georgi Gerganov med medarbetare."
         }
       },
       "whatsNewUpdates": {
         "label": "Visa nyheter",
-        "description": "Visa versionsinformation efter Gus Assistant-uppdateringar"
+        "description": "Visa versionsinformation efter Ghostbar-uppdateringar"
       }
     }
   },
@@ -672,7 +672,7 @@
     "noOptionsFound": "Inga alternativ hittades"
   },
   "accessibility": {
-    "permissionsDescription": "Gus Assistant behöver behörighet för hjälpmedel för att kunna skriva transkriberad text.",
+    "permissionsDescription": "Ghostbar behöver behörighet för hjälpmedel för att kunna skriva transkriberad text.",
     "openSettings": "Öppna systeminställningar"
   },
   "errors": {
@@ -695,11 +695,11 @@
   },
   "appLanguage": {
     "title": "Applikationsspråk",
-    "description": "Ändra språket i Gus Assistant-gränssnittet"
+    "description": "Ändra språket i Ghostbar-gränssnittet"
   },
   "theme": {
     "title": "Apptema",
-    "description": "Välj om Gus Assistant ska följa systemets tema eller förbli ljust eller mörkt",
+    "description": "Välj om Ghostbar ska följa systemets tema eller förbli ljust eller mörkt",
     "options": {
       "system": "System",
       "light": "Ljust",
@@ -711,7 +711,7 @@
     "processing": "Bearbetar..."
   },
   "whatsNew": {
-    "title": "Nytt i Gus Assistant v{{version}}"
+    "title": "Nytt i Ghostbar v{{version}}"
   },
   "secureInput": {
     "blockedWithCulprit_one": "{{name}} kanske blockerar 1 kortkommando",

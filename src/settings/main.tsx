@@ -1,4 +1,4 @@
-// The Settings window (⌘,): Gus Assistant's settings, apart from the library.
+// The Settings window (⌘,): Ghostbar's settings, apart from the library.
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { platform } from "@tauri-apps/plugin-os";

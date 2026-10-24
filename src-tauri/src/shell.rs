@@ -1,4 +1,4 @@
-//! Gus Assistant's own windows: the main window's pages, and the editor and
+//! Ghostbar's own windows: the main window's pages, and the editor and
 //! video pages shared with the Chrome extension (src/ext, synced from it).
 
 use log::warn;
@@ -50,13 +50,13 @@ fn open_page(app: &AppHandle, page: &str, path: &str, title: &str, size: (f64, f
 pub fn open_video(app: &AppHandle, path: &str) {
     let app2 = app.clone();
     let path = path.to_string();
-    let _ = app.run_on_main_thread(move || open_page(&app2, "video.html", &path, "Recording · Gus Assistant", (1180.0, 760.0)));
+    let _ = app.run_on_main_thread(move || open_page(&app2, "video.html", &path, "Recording · Ghostbar", (1180.0, 760.0)));
 }
 
 pub fn open_editor(app: &AppHandle, path: &str) {
     let app2 = app.clone();
     let path = path.to_string();
-    let _ = app.run_on_main_thread(move || open_page(&app2, "editor.html", &path, "Screenshot · Gus Assistant", (1200.0, 800.0)));
+    let _ = app.run_on_main_thread(move || open_page(&app2, "editor.html", &path, "Screenshot · Ghostbar", (1200.0, 800.0)));
 }
 
 /// Opens a capture where it is worked on: a video in the video page, a

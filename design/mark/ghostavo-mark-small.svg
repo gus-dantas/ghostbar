@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <path d="M100 100V0A100 100 0 0 0 0 100Z" fill="#50C1B1"/>
+  <g transform="translate(62 58) rotate(-14) scale(1.45)"><path d="M0 -15C8 -15 12 -4.5 12 3C12 10.5 6.8 15 0 15C-6.8 15 -12 10.5 -12 3C-12 -4.5 -8 -15 0 -15Z" fill="#EE8A50"/><circle cy="4" r="5.6" fill="#123F3A"/></g>
+</svg>

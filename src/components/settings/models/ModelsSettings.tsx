@@ -268,7 +268,7 @@ export const ModelsSettings: React.FC = () => {
               {t("settings.models.yourModels")}
             </h2>
             <div className="flex items-center gap-2">
-              {/* Rescan local sources for models added outside Gus Assistant */}
+              {/* Rescan local sources for models added outside Ghostbar */}
               <button
                 type="button"
                 onClick={() => rescanLocalModels()}

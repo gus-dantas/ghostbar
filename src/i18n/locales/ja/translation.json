@@ -101,7 +101,7 @@
     },
     "permissions": {
       "title": "権限が必要です",
-      "description": "Gus Assistant が正常に動作するにはいくつかの権限が必要です。",
+      "description": "Ghostbar が正常に動作するにはいくつかの権限が必要です。",
       "microphone": {
         "title": "マイクへのアクセス",
         "description": "文字起こしのためにあなたの声を聞くために必要です。"
@@ -175,13 +175,13 @@
       "searchPlaceholder": "モデルを名前で検索…",
       "rescan": {
         "label": "再スキャン",
-        "tooltip": "Gus Assistant を使わずに models フォルダーまたは Hugging Face キャッシュに追加されたモデルを再スキャンします"
+        "tooltip": "Ghostbar を使わずに models フォルダーまたは Hugging Face キャッシュに追加されたモデルを再スキャンします"
       }
     },
     "general": {
       "title": "一般",
       "shortcut": {
-        "title": "Gus Assistant ショートカット",
+        "title": "Ghostbar ショートカット",
         "description": "音声録音を開始するキーボードショートカットを設定",
         "loading": "ショートカットを読み込み中…",
         "none": "ショートカットが設定されていません",
@@ -293,11 +293,11 @@
       },
       "autostart": {
         "label": "起動時に実行",
-        "description": "コンピューターにログインしたときに Gus Assistant を自動的に起動。"
+        "description": "コンピューターにログインしたときに Ghostbar を自動的に起動。"
       },
       "showTrayIcon": {
         "label": "トレイアイコンを表示",
-        "description": "システムトレイに Gus Assistant のアイコンを表示します。"
+        "description": "システムトレイに Ghostbar のアイコンを表示します。"
       },
       "overlay": {
         "style": {
@@ -502,8 +502,8 @@
       },
       "updateChecks": {
         "label": "アップデートを確認",
-        "description": "Gus Assistant の新しいバージョンを自動的にチェック",
-        "lockedDescription": "システム設定により無効化されています (GUS_ASSISTANT_DISABLE_UPDATER)"
+        "description": "Ghostbar の新しいバージョンを自動的にチェック",
+        "lockedDescription": "システム設定により無効化されています (GHOSTBAR_DISABLE_UPDATER)"
       },
       "soundTheme": {
         "label": "サウンドテーマ",
@@ -580,7 +580,7 @@
       },
       "keyboardDiagnostic": {
         "title": "キーボード診断",
-        "description": "キーボードイベントが Gus Assistant に届いているかを確認します。記録されるのはイベント数のみで、押したキーの内容は記録されません。",
+        "description": "キーボードイベントが Ghostbar に届いているかを確認します。記録されるのはイベント数のみで、押したキーの内容は記録されません。",
         "run": "10 秒間の診断を実行",
         "running": "待機中… ショートカットを数回押してください (例: Option+Space)",
         "secureInputLabel": "Secure Input",
@@ -594,7 +594,7 @@
         "mouse": "マウス",
         "verdictBlocked": "Secure Input がキーイベントをブロックしています。解消されるまで、通常キーを含むショートカットは動作しません。",
         "verdictSuspicious": "修飾キーのイベントは届いていますが、キーイベントは届いていません。Secure Input は無効と報告されているのに、何かがキーを抑制しています。GitHub で報告してください。",
-        "verdictOk": "キーイベントは Gus Assistant に正常に届いています。",
+        "verdictOk": "キーイベントは Ghostbar に正常に届いています。",
         "verdictNoEvents": "イベントを検出できませんでした。テスト中にキーを押しましたか？",
         "failed": "診断に失敗しました: {{error}}"
       },
@@ -617,11 +617,11 @@
       "title": "概要",
       "version": {
         "title": "バージョン",
-        "description": "Gus Assistant の現在のバージョン"
+        "description": "Ghostbar の現在のバージョン"
       },
       "appDataDirectory": {
         "title": "アプリデータディレクトリ",
-        "description": "Gus Assistant がデータを保存する場所"
+        "description": "Ghostbar がデータを保存する場所"
       },
       "sourceCode": {
         "title": "ソースコード",
@@ -630,7 +630,7 @@
       },
       "supportDevelopment": {
         "title": "開発を支援",
-        "description": "Gus Assistant の開発を支援してください",
+        "description": "Ghostbar includes code by CJ Pais (MIT licence)",
         "button": "寄付する"
       },
       "acknowledgments": {
@@ -638,12 +638,12 @@
         "ggml": {
           "title": "ggml",
           "description": "オンデバイス機械学習推論のための高性能テンソルライブラリ",
-          "details": "Gus Assistant のローカルの音声からテキストへの文字起こしは transcribe.cpp と ggml を基盤としています。Georgi Gerganov 氏と貢献者の皆様の素晴らしい仕事に感謝します。"
+          "details": "Ghostbar のローカルの音声からテキストへの文字起こしは transcribe.cpp と ggml を基盤としています。Georgi Gerganov 氏と貢献者の皆様の素晴らしい仕事に感謝します。"
         }
       },
       "whatsNewUpdates": {
         "label": "新機能を表示",
-        "description": "Gus Assistant のアップデート後にリリースノートを表示"
+        "description": "Ghostbar のアップデート後にリリースノートを表示"
       }
     }
   },
@@ -672,7 +672,7 @@
     "noOptionsFound": "オプションが見つかりません"
   },
   "accessibility": {
-    "permissionsDescription": "Gus Assistant が文字起こしテキストを入力するには、アクセシビリティ権限が必要です。",
+    "permissionsDescription": "Ghostbar が文字起こしテキストを入力するには、アクセシビリティ権限が必要です。",
     "openSettings": "システム設定を開く"
   },
   "errors": {
@@ -695,11 +695,11 @@
   },
   "appLanguage": {
     "title": "アプリの言語",
-    "description": "Gus Assistant インターフェースの言語を変更"
+    "description": "Ghostbar インターフェースの言語を変更"
   },
   "theme": {
     "title": "アプリのテーマ",
-    "description": "Gus Assistant をシステムのテーマに合わせるか、ライトまたはダークで固定するかを選択します",
+    "description": "Ghostbar をシステムのテーマに合わせるか、ライトまたはダークで固定するかを選択します",
     "options": {
       "system": "システム",
       "light": "ライト",
@@ -711,7 +711,7 @@
     "processing": "処理中…"
   },
   "whatsNew": {
-    "title": "Gus Assistant v{{version}} の新機能"
+    "title": "Ghostbar v{{version}} の新機能"
   },
   "secureInput": {
     "blockedWithCulprit_one": "{{name}} が1個のショートカットをブロックしている可能性があります",

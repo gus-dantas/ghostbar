@@ -107,7 +107,7 @@ fn copy(grab: &Grab, as_table: bool) -> Result<(), String> {
 }
 
 fn work_dir() -> PathBuf {
-    std::env::temp_dir().join("gus-assistant-text")
+    std::env::temp_dir().join("ghostbar-text")
 }
 
 /// Drag over an area; its text (or table) lands on the clipboard and the card

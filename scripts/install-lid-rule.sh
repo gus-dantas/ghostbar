@@ -1,5 +1,5 @@
 #!/bin/zsh -f
-# Lets Gus Assistant's "Awake with the lid closed" switch work without a password.
+# Lets Ghostbar's "Awake with the lid closed" switch work without a password.
 #
 #   sudo ./scripts/install-lid-rule.sh            # for the user running sudo
 #   sudo ./scripts/install-lid-rule.sh someone    # for another user
@@ -65,4 +65,4 @@ if /usr/bin/sudo -n -l -U "$TARGET_USER" /usr/bin/pmset -a hibernatemode 0 >/dev
   die "sudo allowed another pmset setting, which is too broad. Remove it now: sudo ${0:A:h}/uninstall-lid-rule.sh"
 fi
 print -- "      refused: anything broader"
-print -- "\nDone and checked. The lid switch in Gus Assistant now works without a password."
+print -- "\nDone and checked. The lid switch in Ghostbar now works without a password."

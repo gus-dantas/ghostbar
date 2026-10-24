@@ -50,10 +50,10 @@
           "path": "$APPDATA/**/*"
         },
         {
-          "path": "$DOWNLOAD/Gus Assistant"
+          "path": "$DOWNLOAD/Ghostbar"
         },
         {
-          "path": "$DOWNLOAD/Gus Assistant/**"
+          "path": "$DOWNLOAD/Ghostbar/**"
         }
       ]
     },

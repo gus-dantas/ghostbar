@@ -1,5 +1,5 @@
-// Gus Assistant's version of the extension's lib/store.js: the same calls the
-// editor and video pages make, backed by files in Downloads › Gus Assistant
+// Ghostbar's version of the extension's lib/store.js: the same calls the
+// editor and video pages make, backed by files in Downloads › Ghostbar
 // instead of Chrome's IndexedDB and downloads. A capture's id is its path.
 import { convertFileSrc, invoke } from '@tauri-apps/api/core';
 import { getCurrentWindow } from '@tauri-apps/api/window';
@@ -7,7 +7,7 @@ import { save as saveDialog } from '@tauri-apps/plugin-dialog';
 import { BaseDirectory, exists, mkdir, writeFile } from '@tauri-apps/plugin-fs';
 
 export const KEEP_DAYS = 7;
-const FOLDER = 'Gus Assistant';
+const FOLDER = 'Ghostbar';
 
 // The few Chrome calls the shared pages make.
 globalThis.chrome = globalThis.chrome || {
@@ -37,7 +37,7 @@ function addHome() {
   home.className = lib.className;
   home.href = '#';
   home.textContent = 'Home';
-  home.title = 'Back to Gus Assistant';
+  home.title = 'Back to Ghostbar';
   home.addEventListener('click', (e) => {
     e.preventDefault();
     invoke('show_page', { page: 'home' });
@@ -122,7 +122,7 @@ export async function makeThumb(source, width = 480) {
   return c.convertToBlob({ type: 'image/jpeg', quality: 0.82 });
 }
 
-// Saves into Downloads › Gus Assistant (or where Save As points) and tells the app.
+// Saves into Downloads › Ghostbar (or where Save As points) and tells the app.
 export async function saveBlob(blob, name, saveAs = false) {
   const bytes = new Uint8Array(await blob.arrayBuffer());
   let fullPath;

@@ -1,6 +1,8 @@
-# Gus Assistant
+# Ghostbar
 
-<img src="design/icon-1024.png" width="96" align="right" alt="Gus Assistant's icon, a teal ghost">
+<img src="design/mark/app-icon-1024.png" width="96" align="right" alt="Ghostbar's icon: a quarter of a cut avocado whose stone is an eye">
+
+By Gus Dantas, [ghostavo.com](https://ghostavo.com).
 
 One assistant for the Mac, the one I carry to every machine. It lives in the menu bar and does
 the small jobs that otherwise take five separate apps:
@@ -58,9 +60,11 @@ screenshots and Cast) and the camera (for Cast's bubble).
 
 ## Look
 
-The colours, type and icon follow [ghostavo.com](https://ghostavo.com): cool off-white and deep
-teal-black, teal for the selection and the one main action, slate as its counterpart, orange only
-for a recording. IBM Plex Mono for small labels. The icon source is `design/make_icons.cjs`.
+The colours, type and mark follow [ghostavo.com](https://ghostavo.com). The mark is a single
+tile: a quarter of a cut avocado (rind, light teal flesh) whose orange stone is also an eye, drawn
+on a 100-unit grid. Teal marks the selection and the one main action, orange is only for a
+recording, IBM Plex Mono is for small labels. Every version of the mark, the app icon and the menu
+bar glyphs come from `design/mark/make_mark.py`.
 
 ## Credits
 

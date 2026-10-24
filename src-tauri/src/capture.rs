@@ -1,6 +1,6 @@
 //! Screenshots and screen recordings, through macOS's own `screencapture`.
 //!
-//! Everything lands in ~/Downloads/Gus Assistant, the folder the Chrome
+//! Everything lands in ~/Downloads/Ghostbar, the folder the Chrome
 //! extension saves to as well, so the library shows both. Pictures are also
 //! put on the clipboard, ready to paste.
 
@@ -15,9 +15,10 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use tauri::{AppHandle, Emitter};
 
 const SCREENCAPTURE: &str = "/usr/sbin/screencapture";
-const FOLDER: &str = "Gus Assistant";
-/// Where the Chrome extension saved before the rename; listed, never written.
-const LEGACY_FOLDER: &str = "Gus Screenshot";
+const FOLDER: &str = "Ghostbar";
+/// The folders used before the renames. Their files move into FOLDER at
+/// launch; anything that couldn't move is still listed, never written to.
+const LEGACY_FOLDERS: [&str; 2] = ["Gus Assistant", "Gus Screenshot"];
 
 struct Recording {
     child: Child,
@@ -70,8 +71,41 @@ pub fn capture_dir() -> PathBuf {
     home().join("Downloads").join(FOLDER)
 }
 
-fn folders() -> [PathBuf; 2] {
-    [capture_dir(), home().join("Downloads").join(LEGACY_FOLDER)]
+fn folders() -> Vec<PathBuf> {
+    let downloads = home().join("Downloads");
+    std::iter::once(capture_dir()).chain(LEGACY_FOLDERS.iter().map(|f| downloads.join(f))).collect()
+}
+
+/// Moves captures from the old folders into Downloads › Ghostbar, carrying
+/// their titles and text along, and drops each old folder once it is empty.
+/// A name already taken in the new folder stays where it is.
+pub fn move_legacy_captures(app: &AppHandle) {
+    let dir = capture_dir();
+    let mut moved = Vec::new();
+    for old in folders().into_iter().skip(1) {
+        let Ok(entries) = fs::read_dir(&old) else { continue };
+        if fs::create_dir_all(&dir).is_err() {
+            return;
+        }
+        for entry in entries.flatten() {
+            let from = entry.path();
+            let to = dir.join(entry.file_name());
+            if !from.is_file() || to.exists() {
+                continue;
+            }
+            match fs::rename(&from, &to) {
+                Ok(()) => moved.push((from.display().to_string(), to.display().to_string())),
+                Err(e) => warn!("couldn't move {}: {e}", from.display()),
+            }
+        }
+        // Finder's .DS_Store is the only thing allowed to be left behind.
+        let _ = fs::remove_file(old.join(".DS_Store"));
+        let _ = fs::remove_dir(&old);
+    }
+    if !moved.is_empty() {
+        info!("moved {} captures into {}", moved.len(), dir.display());
+        crate::capture_meta::rename_paths(app, &moved);
+    }
 }
 
 fn now_ms() -> f64 {
@@ -115,7 +149,7 @@ pub fn screenshot(app: &AppHandle, mode: ShotMode) {
     let app = app.clone();
     std::thread::spawn(move || {
         crate::capture_card::hide_before_capture(&app);
-        let tmp = std::env::temp_dir().join(format!("gus-assistant-{}.png", now_ms() as u64));
+        let tmp = std::env::temp_dir().join(format!("ghostbar-{}.png", now_ms() as u64));
         let mut cmd = Command::new(SCREENCAPTURE);
         match mode {
             ShotMode::Area => cmd.arg("-i"),
@@ -244,7 +278,7 @@ fn checked(path: &str) -> Result<PathBuf, String> {
         .iter()
         .filter_map(|d| fs::canonicalize(d).ok())
         .any(|d| p.starts_with(&d));
-    if inside { Ok(p) } else { Err("not a Gus Assistant capture".to_string()) }
+    if inside { Ok(p) } else { Err("not a Ghostbar capture".to_string()) }
 }
 
 pub fn open(path: &str) -> Result<(), String> {

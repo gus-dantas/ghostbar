@@ -227,7 +227,7 @@ function App() {
   }, [t]);
 
   // Listen for paste failures and show a toast.
-  // The technical error detail is logged to gus-assistant.log on the Rust side
+  // The technical error detail is logged to ghostbar.log on the Rust side
   // (see actions.rs `error!("Failed to paste transcription: ...")`),
   // so we show a localized, user-friendly message here instead of the raw error.
   useEffect(() => {
@@ -242,7 +242,7 @@ function App() {
   }, [t]);
 
   // Listen for transcription failures and show a toast.
-  // The payload is the backend error message (also logged to gus-assistant.log).
+  // The payload is the backend error message (also logged to ghostbar.log).
   useEffect(() => {
     const unlisten = listen<string>("transcription-error", (event) => {
       toast.error(t("errors.transcriptionFailedTitle"), {
@@ -416,7 +416,7 @@ function App() {
         <main className="gus-main">
           <Toolbar title={pageTitle(currentSection, libraryFilter)} page={currentSection} onPage={setCurrentSection}>
             {currentSection === "library" && libraryFilter !== "dictation" && (
-              <button className="lib-icon" onClick={() => invoke("open_capture_folder")} title="Open the folder in Finder (Downloads › Gus Assistant)">
+              <button className="lib-icon" onClick={() => invoke("open_capture_folder")} title="Open the folder in Finder (Downloads › Ghostbar)">
                 <FolderOpen size={16} />
               </button>
             )}

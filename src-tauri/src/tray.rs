@@ -479,9 +479,9 @@ pub fn tray_tooltip() -> String {
 
 fn version_label() -> String {
     if cfg!(debug_assertions) {
-        format!("Gus Assistant v{} (Dev)", env!("CARGO_PKG_VERSION"))
+        format!("Ghostbar v{} (Dev)", env!("CARGO_PKG_VERSION"))
     } else {
-        format!("Gus Assistant v{}", env!("CARGO_PKG_VERSION"))
+        format!("Ghostbar v{}", env!("CARGO_PKG_VERSION"))
     }
 }
 
@@ -682,7 +682,7 @@ fn build_menu(app: &AppHandle, inputs: &MenuInputs) -> tauri::Result<(Menu<tauri
         format!("Dictation ready · press {dictation}")
     };
     menu.append(&MenuItem::with_id(app, "status", &status, false, None::<&str>)?)?;
-    menu.append(&MenuItem::with_id(app, "quit", "Quit Gus Assistant", true, quit_accelerator)?)?;
+    menu.append(&MenuItem::with_id(app, "quit", "Quit Ghostbar", true, quit_accelerator)?)?;
 
     Ok((menu, tooltip))
 }
@@ -732,7 +732,7 @@ pub fn set_tray_visibility(app: &AppHandle, visible: bool) {
 /// Recovery for the macOS tray-disappearance bug (#1948, tauri-apps/tauri#12060):
 /// the `NSStatusItem` can silently vanish with no error surfaced to the app.
 /// Hiding and re-showing the tray recreates it with its current icon, menu and
-/// tooltip. Called when the user "relaunches" Gus Assistant while it is already running
+/// tooltip. Called when the user "relaunches" Ghostbar while it is already running
 /// (`RunEvent::Reopen` for Spotlight/Finder/Dock, the single-instance callback
 /// for a second process) — the natural "where did my icon go?" moment — so a
 /// relaunch brings the icon back without a full quit.

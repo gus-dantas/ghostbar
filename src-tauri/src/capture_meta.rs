@@ -115,6 +115,18 @@ fn read_text(app: &AppHandle, path: &Path) {
     update(app, &path.display().to_string(), |m| m.text = Some(text));
 }
 
+/// Captures that moved folder keep what was known about them.
+pub fn rename_paths(app: &AppHandle, moves: &[(String, String)]) {
+    with_store(app, |s| {
+        for (from, to) in moves {
+            if let Some(meta) = s.remove(from) {
+                s.insert(to.clone(), meta);
+            }
+        }
+    });
+    save(app);
+}
+
 /// Screenshots taken before the library read text get read once, in the
 /// background, newest first.
 pub fn backfill(app: &AppHandle) {

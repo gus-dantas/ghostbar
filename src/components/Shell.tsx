@@ -112,7 +112,7 @@ export const Sidebar: React.FC<SideProps> = ({ page, filter, onPage, onFilter })
             <i className="ok" />
             Dictation <kbd>{formatShortcut(bindings.transcribe?.current_binding) || "off"}</kbd>
           </span>
-          <span title={chrome ? "The Chrome extension is connected" : "Open Chrome with the Gus Assistant extension"}>
+          <span title={chrome ? "The Chrome extension is connected" : "Open Chrome with the Ghostbar extension"}>
             <i className={chrome ? "ok" : ""} />
             Chrome {chrome ? "connected" : "not connected"}
           </span>

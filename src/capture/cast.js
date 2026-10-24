@@ -432,7 +432,7 @@ $('#stop').addEventListener('click', async () => {
   }
 });
 $('#discard').addEventListener('click', async () => {
-  if (!(await ask('Throw this recording away?', { title: 'Gus Assistant', kind: 'warning' }))) return;
+  if (!(await ask('Throw this recording away?', { title: 'Ghostbar', kind: 'warning' }))) return;
   clearInterval(poll);
   invoke('cast_discard');
 });

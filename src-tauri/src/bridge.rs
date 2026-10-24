@@ -1,4 +1,4 @@
-//! The link between Gus Assistant and its Chrome extension.
+//! The link between Ghostbar and its Chrome extension.
 //!
 //! Chrome starts this same executable as a native-messaging host (it passes the
 //! extension's origin as the first argument). The host relays Chrome's framed
@@ -40,7 +40,7 @@ fn register_host() {
     let home = std::env::var_os("HOME").map(PathBuf::from).unwrap_or_default();
     let manifest = json!({
         "name": HOST_NAME,
-        "description": "Gus Assistant",
+        "description": "Ghostbar",
         "path": exe,
         "type": "stdio",
         "allowed_origins": EXTENSION_ORIGINS,
@@ -98,7 +98,7 @@ fn write_frame(out: &mut impl Write, value: &Value) -> std::io::Result<()> {
 pub fn run_host() {
     let mut stdout = std::io::stdout();
     let Some(socket) = connect_or_launch() else {
-        let _ = write_frame(&mut stdout, &json!({ "type": "error", "message": "Gus Assistant isn't running and couldn't be started." }));
+        let _ = write_frame(&mut stdout, &json!({ "type": "error", "message": "Ghostbar isn't running and couldn't be started." }));
         return;
     };
     let mut to_app = match socket.try_clone() {
@@ -230,7 +230,7 @@ fn handle(app: &AppHandle, id: u64, msg: Value) {
         "hello" | "focus" => {
             touch(id);
             if kind == "hello" {
-                send(id, &json!({ "type": "hello", "app": "Gus Assistant", "version": app.package_info().version.to_string(), "recording": format!("{:?}", crate::cast::phase()).to_lowercase() }));
+                send(id, &json!({ "type": "hello", "app": "Ghostbar", "version": app.package_info().version.to_string(), "recording": format!("{:?}", crate::cast::phase()).to_lowercase() }));
             }
         }
         "record" => {
@@ -290,6 +290,6 @@ pub fn extension_record_tab() -> Result<(), String> {
     if ask_active_chrome(json!({ "type": "record-tab" })) {
         Ok(())
     } else {
-        Err("Chrome isn't connected: open Chrome with the Gus Assistant extension.".into())
+        Err("Chrome isn't connected: open Chrome with the Ghostbar extension.".into())
     }
 }

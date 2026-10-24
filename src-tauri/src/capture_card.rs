@@ -144,7 +144,7 @@ fn present(app: &AppHandle, card: CardItem) {
                 let _ = w.show();
             } else {
                 let _ = tauri::WebviewWindowBuilder::new(&handle, LABEL, WebviewUrl::App("src/card/index.html".into()))
-                    .title("Gus Assistant Capture")
+                    .title("Ghostbar Capture")
                     .position(x, y)
                     .inner_size(SIZE.0, SIZE.1)
                     .decorations(false)
@@ -162,7 +162,7 @@ fn present(app: &AppHandle, card: CardItem) {
 fn build_panel(app: &AppHandle, x: f64, y: f64) -> Result<tauri_nspanel::PanelHandle<tauri::Wry>, String> {
     PanelBuilder::<_, CapturePanel>::new(app, LABEL)
         .url(WebviewUrl::App("src/card/index.html".into()))
-        .title("Gus Assistant Capture")
+        .title("Ghostbar Capture")
         .position(tauri::Position::Logical(tauri::LogicalPosition { x, y }))
         .size(tauri::Size::Logical(tauri::LogicalSize { width: SIZE.0, height: SIZE.1 }))
         .level(PanelLevel::Floating)

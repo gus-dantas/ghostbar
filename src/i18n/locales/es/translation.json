@@ -101,7 +101,7 @@
     },
     "permissions": {
       "title": "Permisos requeridos",
-      "description": "Gus Assistant necesita algunos permisos para funcionar correctamente.",
+      "description": "Ghostbar necesita algunos permisos para funcionar correctamente.",
       "microphone": {
         "title": "Acceso al micrófono",
         "description": "Necesario para escuchar tu voz para la transcripción."
@@ -175,13 +175,13 @@
       "searchPlaceholder": "Buscar modelos por nombre…",
       "rescan": {
         "label": "Volver a escanear",
-        "tooltip": "Vuelve a escanear en busca de modelos añadidos a la carpeta de modelos o a la caché de Hugging Face fuera de Gus Assistant"
+        "tooltip": "Vuelve a escanear en busca de modelos añadidos a la carpeta de modelos o a la caché de Hugging Face fuera de Ghostbar"
       }
     },
     "general": {
       "title": "General",
       "shortcut": {
-        "title": "Atajos de Gus Assistant",
+        "title": "Atajos de Ghostbar",
         "description": "Configura atajos de teclado para activar la grabación de voz a texto",
         "loading": "Cargando atajos...",
         "none": "No hay atajos configurados",
@@ -293,11 +293,11 @@
       },
       "autostart": {
         "label": "Iniciar al arranque",
-        "description": "Iniciar Gus Assistant automáticamente cuando inicies sesión en tu computadora."
+        "description": "Iniciar Ghostbar automáticamente cuando inicies sesión en tu computadora."
       },
       "showTrayIcon": {
         "label": "Mostrar icono de bandeja",
-        "description": "Mostrar el icono de Gus Assistant en la bandeja del sistema."
+        "description": "Mostrar el icono de Ghostbar en la bandeja del sistema."
       },
       "overlay": {
         "style": {
@@ -502,8 +502,8 @@
       },
       "updateChecks": {
         "label": "Buscar actualizaciones",
-        "description": "Buscar automáticamente nuevas versiones de Gus Assistant",
-        "lockedDescription": "Deshabilitado por la configuración del sistema (GUS_ASSISTANT_DISABLE_UPDATER)"
+        "description": "Buscar automáticamente nuevas versiones de Ghostbar",
+        "lockedDescription": "Deshabilitado por la configuración del sistema (GHOSTBAR_DISABLE_UPDATER)"
       },
       "soundTheme": {
         "label": "Tema de sonido",
@@ -580,7 +580,7 @@
       },
       "keyboardDiagnostic": {
         "title": "Diagnóstico del teclado",
-        "description": "Comprueba si los eventos de teclado llegan a Gus Assistant. Solo se registra el número de eventos, nunca qué teclas pulsas.",
+        "description": "Comprueba si los eventos de teclado llegan a Ghostbar. Solo se registra el número de eventos, nunca qué teclas pulsas.",
         "run": "Ejecutar diagnóstico de 10 s",
         "running": "Escuchando… pulsa tu atajo varias veces (p. ej. Option+Space)",
         "secureInputLabel": "Secure Input",
@@ -594,7 +594,7 @@
         "mouse": "Ratón",
         "verdictBlocked": "Secure Input está bloqueando los eventos de teclado: los atajos que incluyen una tecla normal no pueden funcionar hasta que se resuelva.",
         "verdictSuspicious": "Llegaron eventos de modificadores, pero ningún evento de tecla: algo está suprimiendo las teclas aunque Secure Input aparezca como desactivado. Por favor, repórtalo en GitHub.",
-        "verdictOk": "Los eventos de teclado llegan a Gus Assistant con normalidad.",
+        "verdictOk": "Los eventos de teclado llegan a Ghostbar con normalidad.",
         "verdictNoEvents": "No se capturó ningún evento: ¿pulsaste alguna tecla durante la prueba?",
         "failed": "El diagnóstico falló: {{error}}"
       },
@@ -617,11 +617,11 @@
       "title": "Acerca de",
       "version": {
         "title": "Versión",
-        "description": "Versión actual de Gus Assistant"
+        "description": "Versión actual de Ghostbar"
       },
       "appDataDirectory": {
         "title": "Directorio de datos de la aplicación",
-        "description": "Ubicación donde Gus Assistant almacena sus datos"
+        "description": "Ubicación donde Ghostbar almacena sus datos"
       },
       "sourceCode": {
         "title": "Código fuente",
@@ -630,7 +630,7 @@
       },
       "supportDevelopment": {
         "title": "Apoyar el desarrollo",
-        "description": "Ayúdanos a continuar construyendo Gus Assistant",
+        "description": "Ghostbar includes code by CJ Pais (MIT licence)",
         "button": "Donar"
       },
       "acknowledgments": {
@@ -638,12 +638,12 @@
         "ggml": {
           "title": "ggml",
           "description": "Biblioteca de tensores de alto rendimiento para inferencia de aprendizaje automático en el dispositivo",
-          "details": "El habla a texto local de Gus Assistant está construido sobre transcribe.cpp y ggml. Gracias al increíble trabajo de Georgi Gerganov y colaboradores."
+          "details": "El habla a texto local de Ghostbar está construido sobre transcribe.cpp y ggml. Gracias al increíble trabajo de Georgi Gerganov y colaboradores."
         }
       },
       "whatsNewUpdates": {
         "label": "Mostrar novedades",
-        "description": "Mostrar notas de la versión después de las actualizaciones de Gus Assistant"
+        "description": "Mostrar notas de la versión después de las actualizaciones de Ghostbar"
       }
     }
   },
@@ -672,7 +672,7 @@
     "noOptionsFound": "No se encontraron opciones"
   },
   "accessibility": {
-    "permissionsDescription": "Gus Assistant necesita permisos de accesibilidad para escribir texto transcrito.",
+    "permissionsDescription": "Ghostbar necesita permisos de accesibilidad para escribir texto transcrito.",
     "openSettings": "Abrir Ajustes del Sistema"
   },
   "errors": {
@@ -695,11 +695,11 @@
   },
   "appLanguage": {
     "title": "Idioma de la aplicación",
-    "description": "Cambia el idioma de la interfaz de Gus Assistant"
+    "description": "Cambia el idioma de la interfaz de Ghostbar"
   },
   "theme": {
     "title": "Tema de la aplicación",
-    "description": "Elige si Gus Assistant sigue el tema del sistema o permanece claro u oscuro",
+    "description": "Elige si Ghostbar sigue el tema del sistema o permanece claro u oscuro",
     "options": {
       "system": "Sistema",
       "light": "Claro",
@@ -711,7 +711,7 @@
     "processing": "Procesando..."
   },
   "whatsNew": {
-    "title": "Nuevo en Gus Assistant v{{version}}"
+    "title": "Nuevo en Ghostbar v{{version}}"
   },
   "secureInput": {
     "blockedWithCulprit_one": "{{name}} puede estar bloqueando 1 atajo",

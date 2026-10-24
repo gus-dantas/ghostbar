@@ -278,7 +278,7 @@ const Inspector: React.FC<{
 
 // ---------- the page ----------
 
-/** Everything in Downloads › Gus Assistant, grouped by day, like Photos. */
+/** Everything in Downloads › Ghostbar, grouped by day, like Photos. */
 export const LibraryPage: React.FC<{ filter: LibraryFilter }> = ({ filter }) => {
   const { files, refresh } = useCaptures();
   const favourites = useFavourites();

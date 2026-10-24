@@ -1,4 +1,4 @@
-// Copies the pages Gus Assistant shares with its Chrome extension
+// Copies the pages Ghostbar shares with its Chrome extension
 // (~/Projects/gus-screenshot) into src/ext, then swaps in the app's own
 // storage layer (src/ext-platform/store.js) for the Chrome one.
 import { cpSync, existsSync, mkdirSync, rmSync, copyFileSync, appendFileSync, readFileSync } from 'node:fs';

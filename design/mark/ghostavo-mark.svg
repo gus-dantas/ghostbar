@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <mask id="cut-cc"><rect width="100" height="100" fill="#fff"/><g transform="translate(64 58) rotate(-14)"><path d="M0 -15C8 -15 12 -4.5 12 3C12 10.5 6.8 15 0 15C-6.8 15 -12 10.5 -12 3C-12 -4.5 -8 -15 0 -15Z" fill="#000"/></g></mask>
+    <mask id="glint-cc"><rect width="100" height="100" fill="#fff"/><g transform="translate(64 58) rotate(-14)"><circle cx="-1.7" cy="2.2" r="1.6" fill="#000"/></g></mask>
+  </defs>
+  <path d="M100 100V0A100 100 0 0 0 0 100Z" fill="currentColor" mask="url(#cut-cc)"/>
+  <g mask="url(#glint-cc)"><g transform="translate(64 58) rotate(-14)"><circle cy="4" r="5.4" fill="currentColor"/></g></g>
+</svg>

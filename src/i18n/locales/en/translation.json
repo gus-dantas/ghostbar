@@ -102,7 +102,7 @@
     },
     "permissions": {
       "title": "Permissions Required",
-      "description": "Gus Assistant needs a couple of permissions to work properly.",
+      "description": "Ghostbar needs a couple of permissions to work properly.",
       "microphone": {
         "title": "Microphone Access",
         "description": "Required to hear your voice for transcription."
@@ -162,7 +162,7 @@
     "general": {
       "title": "General",
       "shortcut": {
-        "title": "Gus Assistant Shortcuts",
+        "title": "Ghostbar Shortcuts",
         "description": "Configure keyboard shortcuts to trigger speech-to-text recording",
         "loading": "Loading shortcuts...",
         "none": "No shortcuts configured",
@@ -246,7 +246,7 @@
       },
       "rescan": {
         "label": "Rescan",
-        "tooltip": "Rescan for models added to the models folder or Hugging Face cache outside Gus Assistant"
+        "tooltip": "Rescan for models added to the models folder or Hugging Face cache outside Ghostbar"
       },
       "noModelsMatch": "No models match this filter."
     },
@@ -314,11 +314,11 @@
       },
       "autostart": {
         "label": "Launch on Startup",
-        "description": "Automatically start Gus Assistant when you log in to your computer."
+        "description": "Automatically start Ghostbar when you log in to your computer."
       },
       "showTrayIcon": {
         "label": "Show Tray Icon",
-        "description": "Display the Gus Assistant icon in the system tray."
+        "description": "Display the Ghostbar icon in the system tray."
       },
       "overlay": {
         "style": {
@@ -523,8 +523,8 @@
       },
       "updateChecks": {
         "label": "Check for Updates",
-        "description": "Automatically check for new versions of Gus Assistant",
-        "lockedDescription": "Disabled by system configuration (GUS_ASSISTANT_DISABLE_UPDATER)"
+        "description": "Automatically check for new versions of Ghostbar",
+        "lockedDescription": "Disabled by system configuration (GHOSTBAR_DISABLE_UPDATER)"
       },
       "whatsNewPreview": {
         "title": "Preview What's New",
@@ -615,7 +615,7 @@
       },
       "keyboardDiagnostic": {
         "title": "Keyboard Diagnostic",
-        "description": "Checks whether keyboard events reach Gus Assistant. Only event counts are recorded — never which keys you press.",
+        "description": "Checks whether keyboard events reach Ghostbar. Only event counts are recorded — never which keys you press.",
         "run": "Run 10s diagnostic",
         "running": "Listening… press your shortcut a few times (e.g. Option+Space)",
         "secureInputLabel": "Secure Input",
@@ -629,7 +629,7 @@
         "mouse": "Mouse",
         "verdictBlocked": "Secure Input is blocking key events — keyed shortcuts cannot work until it is resolved.",
         "verdictSuspicious": "Modifier events arrived but no key events — something is suppressing keys even though Secure Input reports disabled. Please report this on GitHub.",
-        "verdictOk": "Key events are reaching Gus Assistant normally.",
+        "verdictOk": "Key events are reaching Ghostbar normally.",
         "verdictNoEvents": "No events captured — did you press any keys during the test?",
         "failed": "Diagnostic failed: {{error}}"
       }
@@ -638,15 +638,15 @@
       "title": "About",
       "version": {
         "title": "Version",
-        "description": "Current version of Gus Assistant"
+        "description": "Current version of Ghostbar"
       },
       "whatsNewUpdates": {
         "label": "Show What's New",
-        "description": "Show release notes after Gus Assistant updates"
+        "description": "Show release notes after Ghostbar updates"
       },
       "appDataDirectory": {
         "title": "App Data Directory",
-        "description": "Location where Gus Assistant stores its data"
+        "description": "Location where Ghostbar stores its data"
       },
       "sourceCode": {
         "title": "Source Code",
@@ -655,7 +655,7 @@
       },
       "supportDevelopment": {
         "title": "Support Development",
-        "description": "Gus Assistant is built on Gus Assistant by CJ Pais (MIT licence)",
+        "description": "Ghostbar includes code by CJ Pais (MIT licence)",
         "button": "Donate"
       },
       "acknowledgments": {
@@ -684,7 +684,7 @@
     "portableUpdateBrowseButton": "Open GitHub Releases"
   },
   "whatsNew": {
-    "title": "New in Gus Assistant v{{version}}"
+    "title": "New in Ghostbar v{{version}}"
   },
   "common": {
     "loading": "Loading...",
@@ -696,7 +696,7 @@
     "noOptionsFound": "No options found"
   },
   "accessibility": {
-    "permissionsDescription": "Gus Assistant needs accessibility permissions to type transcribed text.",
+    "permissionsDescription": "Ghostbar needs accessibility permissions to type transcribed text.",
     "openSettings": "Open System Settings"
   },
   "errors": {
@@ -719,11 +719,11 @@
   },
   "appLanguage": {
     "title": "Application Language",
-    "description": "Change the language of the Gus Assistant interface"
+    "description": "Change the language of the Ghostbar interface"
   },
   "theme": {
     "title": "Application Theme",
-    "description": "Choose whether Gus Assistant follows your system theme or stays light or dark",
+    "description": "Choose whether Ghostbar follows your system theme or stays light or dark",
     "options": {
       "system": "System",
       "light": "Light",
@@ -747,7 +747,7 @@
   },
   "capture": {
     "title": "Capture",
-    "description": "Screenshots go to the clipboard and to Downloads › Gus Assistant. Recordings include your microphone.",
+    "description": "Screenshots go to the clipboard and to Downloads › Ghostbar. Recordings include your microphone.",
     "area": "Area",
     "window": "Window",
     "screen": "Screen",
@@ -755,7 +755,7 @@
     "stop": "Stop",
     "shortcuts": "Capture shortcuts",
     "library": "Library",
-    "libraryDescription": "Everything in Downloads › Gus Assistant, including what the Chrome extension saves.",
+    "libraryDescription": "Everything in Downloads › Ghostbar, including what the Chrome extension saves.",
     "filters": {
       "all": "All",
       "video": "Videos",

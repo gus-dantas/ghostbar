@@ -28,7 +28,7 @@ extern "C" {
 const IDLE_BEFORE_NUDGE: f64 = 50.0;
 const CHECK_EVERY: Duration = Duration::from_secs(20);
 const SUDOERS_RULE: &str = "/etc/sudoers.d/pmset-disablesleep";
-const INSTALL_RULE: &str = "scripts/install-lid-rule.sh (in the Gus Assistant source)";
+const INSTALL_RULE: &str = "scripts/install-lid-rule.sh (in the Ghostbar source)";
 
 static JIGGLER: AtomicBool = AtomicBool::new(false);
 static JIGGLER_THREAD: AtomicBool = AtomicBool::new(false);

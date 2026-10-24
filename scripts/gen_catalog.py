@@ -3,7 +3,7 @@
 # dependencies = ["huggingface_hub", "fsspec"]
 # ///
 """
-Model catalog generator for Gus Assistant.
+Model catalog generator for Ghostbar.
 
 Merges three sources into one catalog.json:
   1. HF card `transcribe_cpp` block  -> capabilities + benchmarks (canonical)

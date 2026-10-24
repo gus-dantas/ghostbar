@@ -299,7 +299,7 @@ pub fn open(app: &AppHandle) {
     let (sx, sy, sw, sh) = screen_area(app);
     let (w, h) = (420.0, 720.0_f64.min(sh - 80.0));
     #[cfg(target_os = "macos")]
-    floating_panel::<CastPanel>(app, PANEL, "src/capture/cast.html", "Gus Assistant Cast", (sx + sw - w - 24.0, sy + (sh - h) / 2.0, w, h), true, None);
+    floating_panel::<CastPanel>(app, PANEL, "src/capture/cast.html", "Ghostbar Cast", (sx + sw - w - 24.0, sy + (sh - h) / 2.0, w, h), true, None);
     set_phase(app, Phase::Setup);
 }
 
@@ -352,14 +352,14 @@ fn place_screen_bubble(app: &AppHandle) {
         return;
     }
     #[cfg(target_os = "macos")]
-    floating_panel::<CastBubblePanel>(app, BUBBLE, "src/capture/bubble.html", "Gus Assistant Camera", (x, y, d, d), false, Some(watch_bubble));
+    floating_panel::<CastBubblePanel>(app, BUBBLE, "src/capture/bubble.html", "Ghostbar Camera", (x, y, d, d), false, Some(watch_bubble));
 }
 
 fn open_prompter(app: &AppHandle) {
     let (sx, sy, sw, _sh) = screen_area(app);
     let (w, h) = (560.0, 250.0);
     #[cfg(target_os = "macos")]
-    floating_panel::<CastPanel>(app, PROMPTER, "src/capture/prompter.html", "Gus Assistant Prompter", (sx + (sw - w) / 2.0, sy + 40.0, w, h), true, None);
+    floating_panel::<CastPanel>(app, PROMPTER, "src/capture/prompter.html", "Ghostbar Prompter", (sx + (sw - w) / 2.0, sy + 40.0, w, h), true, None);
 }
 
 fn close_all(app: &AppHandle) {
@@ -387,7 +387,7 @@ pub fn prepare(app: &AppHandle, source: Source, camera: bool, system_audio: bool
     }
     if unsafe { gcast_has_permission() } != 1 {
         unsafe { gcast_request_permission() };
-        return Err("Gus Assistant needs permission to record the screen: turn it on in System Settings › Privacy & Security › Screen & System Audio Recording, then reopen Gus Assistant.".into());
+        return Err("Ghostbar needs permission to record the screen: turn it on in System Settings › Privacy & Security › Screen & System Audio Recording, then reopen Ghostbar.".into());
     }
     let kind = CString::new(source.kind.clone()).map_err(|e| e.to_string())?;
     if unsafe { gcast_prepare(kind.as_ptr(), source.id, camera as c_int, system_audio as c_int) } != 0 {
@@ -438,7 +438,7 @@ pub fn pause(app: &AppHandle) {
     }
 }
 
-/// Stops, saves to Downloads › Gus Assistant and opens the result.
+/// Stops, saves to Downloads › Ghostbar and opens the result.
 pub fn stop(app: &AppHandle) -> Result<String, String> {
     if !is_recording() {
         return Err("not recording".into());

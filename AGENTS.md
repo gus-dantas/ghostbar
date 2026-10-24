@@ -4,7 +4,7 @@ Guidance for AI coding assistants working in this repository.
 
 ## What it is
 
-Gus Assistant is a macOS menu bar app (Tauri 2: Rust + React/TypeScript, with Swift for the
+Ghostbar is a macOS menu bar app (Tauri 2: Rust + React/TypeScript, with Swift for the
 parts that need AppKit, ScreenCaptureKit and Vision). Apple silicon, macOS 15 or later.
 
 ## Commands

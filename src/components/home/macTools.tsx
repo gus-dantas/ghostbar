@@ -1,4 +1,4 @@
-// The Mac switches Gus Assistant took over from separate apps: the VPN (exit
+// The Mac switches Ghostbar took over from separate apps: the VPN (exit
 // country), keeping Teams available (was MouseJiggler) and staying awake with
 // the lid closed (was Insone). Shared by the sidebar and Today.
 import React, { useEffect, useState } from "react";

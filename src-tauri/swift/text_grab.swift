@@ -108,7 +108,7 @@ private struct Origin: Encodable {
 }
 
 /// The app and window under the pointer (or simply the front one), skipping
-/// Gus Assistant's own windows and the system's. After an area or window
+/// Ghostbar's own windows and the system's. After an area or window
 /// screenshot the pointer is still over what was captured.
 @_cdecl("gmeta_window")
 public func gmeta_window(_ underPointer: Bool) -> UnsafeMutablePointer<CChar>? {

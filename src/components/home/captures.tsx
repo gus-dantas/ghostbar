@@ -11,7 +11,7 @@ export interface CaptureFile {
   modified: number;
 }
 
-/** Everything in Downloads › Gus Assistant (and the old Gus Screenshot folder), newest first. */
+/** Everything in Downloads › Ghostbar (and anything left in the old folders), newest first. */
 export function useCaptures() {
   const [files, setFiles] = useState<CaptureFile[]>([]);
   const refresh = useCallback(async () => {

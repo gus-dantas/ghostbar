@@ -1,5 +1,5 @@
 
-/* ---- Gus Assistant (app only): the ghostavo.com dark palette over the extension's ui.css.
+/* ---- Ghostbar (app only): the ghostavo.com dark palette over the extension's ui.css.
    scripts/sync-extension.mjs appends this file to src/ext/ui.css on every sync, so the
    shared pages and the floating panels match the app while the extension keeps its own. ---- */
 @font-face { font-family: "IBM Plex Mono"; font-weight: 400; font-display: swap; src: url(../assets/fonts/ibm-plex-mono-400-latin.woff2) format("woff2"); }

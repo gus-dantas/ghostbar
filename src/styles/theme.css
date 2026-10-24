@@ -1,4 +1,4 @@
-/* Gus Assistant colours: the ghostavo.com system, as in Overload. Cool off-white and deep
+/* Ghostbar colours: the ghostavo.com system, as in Overload. Cool off-white and deep
    teal-black, teal as the signature (the selection and the one main action), slate as its
    counterpart, orange only for a recording. */
 
@@ -54,7 +54,7 @@
  * Explicit theme override, driven by the `theme` setting via
  * `document.documentElement.dataset.theme`. When set, the higher-specificity
  * attribute selectors win over the `prefers-color-scheme` media query above,
- * so a user can keep Gus Assistant light or dark regardless of the OS setting.
+ * so a user can keep Ghostbar light or dark regardless of the OS setting.
  * `system` (or no attribute) leaves the OS in charge.
  *
  * Lives here (not in App.css) so every window that imports the shared palette —

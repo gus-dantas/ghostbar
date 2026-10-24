@@ -287,7 +287,7 @@ impl SoundTheme {
 }
 
 /// UI appearance mode. `System` follows the OS `prefers-color-scheme`; `Light`
-/// and `Dark` force one of the two palettes Gus Assistant already ships.
+/// and `Dark` force one of the two palettes Ghostbar already ships.
 #[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Type)]
 #[serde(rename_all = "snake_case")]
 pub enum Theme {
@@ -1284,20 +1284,20 @@ fn apply_settings_migrations(
 }
 
 /// Update checks are forced off (without touching the persisted setting) when
-/// `GUS_ASSISTANT_DISABLE_UPDATER` is set — e.g. by the Nix package, since self-update
+/// `GHOSTBAR_DISABLE_UPDATER` is set — e.g. by the Nix package, since self-update
 /// can't work against an immutable /nix/store install.
 pub fn update_checks_forced_disabled() -> bool {
     use std::sync::OnceLock;
     static IS_UPDATER_DISABLED: OnceLock<bool> = OnceLock::new();
-    // Gus Assistant is a fork: updating from Gus Assistant's releases would replace it with Gus Assistant.
+    // Ghostbar has no release feed of its own yet, so updates stay off.
     *IS_UPDATER_DISABLED.get_or_init(|| {
-        let _ = utils::env_flag_enabled("GUS_ASSISTANT_DISABLE_UPDATER");
+        let _ = utils::env_flag_enabled("GHOSTBAR_DISABLE_UPDATER");
         true
     })
 }
 
 /// Effective updater state: the user's stored preference, overridden to `false`
-/// while `GUS_ASSISTANT_DISABLE_UPDATER` is set. Callers deciding whether to actually
+/// while `GHOSTBAR_DISABLE_UPDATER` is set. Callers deciding whether to actually
 /// check for updates must use this rather than reading `update_checks_enabled`
 /// directly, so the forced-off state never leaks into the persisted setting.
 pub fn update_checks_effectively_enabled(settings: &AppSettings) -> bool {
@@ -1438,7 +1438,7 @@ mod tests {
             "overlay_position": "bottom",
             "debug_mode": false,
             "log_level": 2,
-            "custom_words": ["Gus Assistant", "ghostavo"],
+            "custom_words": ["Ghostbar", "ghostavo"],
             "model_unload_timeout": "min5",
             "word_correction_threshold": 0.18,
             "history_limit": 5,

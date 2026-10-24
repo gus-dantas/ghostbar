@@ -119,8 +119,8 @@ fn configure_layer_shell_surface(
 /// Returns true if layer shell was successfully initialized, false otherwise
 #[cfg(target_os = "linux")]
 fn init_gtk_layer_shell(overlay_window: &tauri::webview::WebviewWindow) -> bool {
-    if utils::env_flag_enabled("GUS_ASSISTANT_NO_GTK_LAYER_SHELL") {
-        debug!("Skipping GTK layer shell init (GUS_ASSISTANT_NO_GTK_LAYER_SHELL is enabled)");
+    if utils::env_flag_enabled("GHOSTBAR_NO_GTK_LAYER_SHELL") {
+        debug!("Skipping GTK layer shell init (GHOSTBAR_NO_GTK_LAYER_SHELL is enabled)");
         return false;
     }
 

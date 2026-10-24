@@ -793,7 +793,7 @@ fn trace_loc(trace: &str) -> Option<String> {
 }
 
 fn notify(text: &str) {
-    let script = format!("display notification {:?} with title \"Gus Assistant\"", text);
+    let script = format!("display notification {:?} with title \"Ghostbar\"", text);
     let _ = Command::new("/usr/bin/osascript").args(["-e", &script]).status();
 }
 

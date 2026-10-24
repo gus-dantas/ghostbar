@@ -101,7 +101,7 @@
     },
     "permissions": {
       "title": "Permisos necessaris",
-      "description": "El Gus Assistant demana alguns permisos per funcionar correctament.",
+      "description": "El Ghostbar demana alguns permisos per funcionar correctament.",
       "microphone": {
         "title": "Accés al micròfon",
         "description": "Necessari per escoltar la vostra veu i transcriure-la."
@@ -161,7 +161,7 @@
     "general": {
       "title": "General",
       "shortcut": {
-        "title": "Dreceres del Gus Assistant",
+        "title": "Dreceres del Ghostbar",
         "description": "Configura les dreceres de teclat per iniciar l'enregistrament de veu per a la transcripció",
         "loading": "S'estan carregant les dreceres...",
         "none": "No hi ha cap drecera configurada",
@@ -225,7 +225,7 @@
       },
       "rescan": {
         "label": "Torna a cercar",
-        "tooltip": "Torna a cercar models afegits a la carpeta de models o a la memòria cau de Hugging Face des de fora del Gus Assistant"
+        "tooltip": "Torna a cercar models afegits a la carpeta de models o a la memòria cau de Hugging Face des de fora del Ghostbar"
       },
       "noModelsMatch": "Cap model no coincideix amb aquest filtre."
     },
@@ -293,11 +293,11 @@
       },
       "autostart": {
         "label": "Inicia en entrar a la sessió",
-        "description": "Inicia automàticament el Gus Assistant quan entreu a la sessió de l'ordinador."
+        "description": "Inicia automàticament el Ghostbar quan entreu a la sessió de l'ordinador."
       },
       "showTrayIcon": {
         "label": "Mostra la icona a la safata",
-        "description": "Mostra la icona del Gus Assistant a la safata del sistema."
+        "description": "Mostra la icona del Ghostbar a la safata del sistema."
       },
       "overlay": {
         "style": {
@@ -502,8 +502,8 @@
       },
       "updateChecks": {
         "label": "Comproveu si hi ha actualitzacions",
-        "description": "Comprova automàticament si hi ha versions noves del Gus Assistant",
-        "lockedDescription": "Desactivat per la configuració del sistema (GUS_ASSISTANT_DISABLE_UPDATER)"
+        "description": "Comprova automàticament si hi ha versions noves del Ghostbar",
+        "lockedDescription": "Desactivat per la configuració del sistema (GHOSTBAR_DISABLE_UPDATER)"
       },
       "whatsNewPreview": {
         "title": "Previsualització de les novetats",
@@ -594,7 +594,7 @@
       },
       "keyboardDiagnostic": {
         "title": "Diagnòstic del teclat",
-        "description": "Comprova si els esdeveniments del teclat arriben al Gus Assistant. Només se'n registra el recompte, mai les tecles que premeu.",
+        "description": "Comprova si els esdeveniments del teclat arriben al Ghostbar. Només se'n registra el recompte, mai les tecles que premeu.",
         "run": "Executa un diagnòstic de 10 s",
         "running": "S'està escoltant… prema la drecera unes quantes vegades (p. ex., Option+Space)",
         "secureInputLabel": "Entrada segura",
@@ -608,7 +608,7 @@
         "mouse": "Ratolí",
         "verdictBlocked": "L'entrada segura bloca els esdeveniments de tecla. Les dreceres amb tecles no poden funcionar fins que es resolgui.",
         "verdictSuspicious": "Han arribat esdeveniments de modificadors, però no de tecles. Alguna cosa suprimeix les tecles tot i que l'entrada segura consta com a desactivada. Informeu-ne al GitHub.",
-        "verdictOk": "Els esdeveniments de tecla arriben al Gus Assistant amb normalitat.",
+        "verdictOk": "Els esdeveniments de tecla arriben al Ghostbar amb normalitat.",
         "verdictNoEvents": "No s'ha capturat cap esdeveniment. Heu premut alguna tecla durant la prova?",
         "failed": "El diagnòstic ha fallat: {{error}}"
       }
@@ -617,15 +617,15 @@
       "title": "Quant a",
       "version": {
         "title": "Versió",
-        "description": "Versió actual del Gus Assistant"
+        "description": "Versió actual del Ghostbar"
       },
       "whatsNewUpdates": {
         "label": "Mostra les novetats",
-        "description": "Mostra les notes de la versió després d'actualitzar el Gus Assistant"
+        "description": "Mostra les notes de la versió després d'actualitzar el Ghostbar"
       },
       "appDataDirectory": {
         "title": "Directori de dades de l'aplicació",
-        "description": "Ubicació on el Gus Assistant desa les dades"
+        "description": "Ubicació on el Ghostbar desa les dades"
       },
       "sourceCode": {
         "title": "Codi font",
@@ -634,7 +634,7 @@
       },
       "supportDevelopment": {
         "title": "Dona suport al desenvolupament",
-        "description": "Ajudeu-nos a continuar desenvolupant el Gus Assistant",
+        "description": "Ghostbar includes code by CJ Pais (MIT licence)",
         "button": "Feu una donació"
       },
       "acknowledgments": {
@@ -642,7 +642,7 @@
         "ggml": {
           "title": "ggml",
           "description": "Biblioteca de tensors d'alt rendiment per a la inferència d'aprenentatge automàtic al dispositiu",
-          "details": "La transcripció local de veu a text del Gus Assistant es basa en el transcribe.cpp i el ggml. Gràcies a la gran feina de Georgi Gerganov i dels col·laboradors."
+          "details": "La transcripció local de veu a text del Ghostbar es basa en el transcribe.cpp i el ggml. Gràcies a la gran feina de Georgi Gerganov i dels col·laboradors."
         }
       }
     }
@@ -663,7 +663,7 @@
     "portableUpdateBrowseButton": "Obriu GitHub Releases"
   },
   "whatsNew": {
-    "title": "Novetats del Gus Assistant v{{version}}"
+    "title": "Novetats del Ghostbar v{{version}}"
   },
   "common": {
     "loading": "S'està carregant...",
@@ -675,7 +675,7 @@
     "noOptionsFound": "No s'ha trobat cap opció"
   },
   "accessibility": {
-    "permissionsDescription": "El Gus Assistant necessita permisos d'accessibilitat per escriure el text transcrit.",
+    "permissionsDescription": "El Ghostbar necessita permisos d'accessibilitat per escriure el text transcrit.",
     "openSettings": "Obriu la configuració del sistema"
   },
   "errors": {
@@ -698,11 +698,11 @@
   },
   "appLanguage": {
     "title": "Llengua de l'aplicació",
-    "description": "Canvia la llengua de la interfície del Gus Assistant"
+    "description": "Canvia la llengua de la interfície del Ghostbar"
   },
   "theme": {
     "title": "Tema de l'aplicació",
-    "description": "Tria si el Gus Assistant segueix el tema del sistema o es manté en mode clar o fosc",
+    "description": "Tria si el Ghostbar segueix el tema del sistema o es manté en mode clar o fosc",
     "options": {
       "system": "Sistema",
       "light": "Clar",

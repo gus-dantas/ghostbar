@@ -10,9 +10,13 @@ import type { CaptureFile } from "./captures";
 const FAV_KEY = "gus-favourites";
 const FAV_EVENT = "gus-favourites-changed";
 
+// Captures moved from the old folders into Downloads › Ghostbar at launch.
+const OLD_FOLDERS = /\/Downloads\/(Gus Assistant|Gus Screenshot)\//;
+
 export function readFavourites(): Set<string> {
   try {
-    return new Set(JSON.parse(localStorage.getItem(FAV_KEY) || "[]"));
+    const saved: string[] = JSON.parse(localStorage.getItem(FAV_KEY) || "[]");
+    return new Set(saved.map((p) => p.replace(OLD_FOLDERS, "/Downloads/Ghostbar/")));
   } catch {
     return new Set();
   }

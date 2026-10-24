@@ -1,4 +1,4 @@
-//! Gus Assistant-keys based keyboard shortcut implementation
+//! Ghostbar-keys based keyboard shortcut implementation
 //!
 //! This module provides an alternative to Tauri's global-shortcut plugin
 //! using the handy-keys library for more control over keyboard events.

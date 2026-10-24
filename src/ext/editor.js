@@ -729,7 +729,7 @@ async function save(saveAs = false) {
   if (!base) return;
   try {
     await saveBlob(await exportBlob(), `${fileStem(title)}.png`, saveAs, { captureId: new URLSearchParams(location.search).get('id') });
-    if (!saveAs) toast('Saved to Downloads › Gus Assistant');
+    if (!saveAs) toast('Saved to Downloads › Ghostbar');
   } catch (err) {
     if (!/cancel/i.test(err.message)) toast(`Couldn't save: ${err.message}`, true);
   }
@@ -797,7 +797,7 @@ function setBase(canvas, scale, meta = {}) {
   redoStack = [];
   scene.width = W;
   scene.height = H;
-  document.title = title ? `${title} · Gus Assistant` : 'Gus Assistant';
+  document.title = title ? `${title} · Ghostbar` : 'Ghostbar';
   $('#empty').hidden = true;
   viewport.hidden = false;
   renderScene();

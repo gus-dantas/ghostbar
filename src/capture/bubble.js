@@ -35,7 +35,7 @@ navigator.mediaDevices
   })
   .catch(() => {
     msg.hidden = false;
-    msg.textContent = 'Camera blocked. Allow Gus Assistant in System Settings › Privacy & Security › Camera.';
+    msg.textContent = 'Camera blocked. Allow Ghostbar in System Settings › Privacy & Security › Camera.';
   });
 
 document.getElementById('ring').addEventListener('mousedown', (e) => {

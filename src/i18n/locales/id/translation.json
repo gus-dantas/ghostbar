@@ -101,7 +101,7 @@
     },
     "permissions": {
       "title": "Izin Diperlukan",
-      "description": "Gus Assistant memerlukan beberapa izin agar dapat berfungsi dengan baik.",
+      "description": "Ghostbar memerlukan beberapa izin agar dapat berfungsi dengan baik.",
       "microphone": {
         "title": "Akses Mikrofon",
         "description": "Diperlukan untuk menangkap suara Anda agar dapat ditranskripsikan."
@@ -161,7 +161,7 @@
     "general": {
       "title": "Umum",
       "shortcut": {
-        "title": "Pintasan Gus Assistant",
+        "title": "Pintasan Ghostbar",
         "description": "Atur pintasan keyboard untuk memulai perekaman ucapan-ke-teks",
         "loading": "Memuat pintasan...",
         "none": "Belum ada pintasan yang diatur",
@@ -225,7 +225,7 @@
       },
       "rescan": {
         "label": "Pindai Ulang",
-        "tooltip": "Pindai ulang model yang ditambahkan ke folder model atau cache Hugging Face dari luar Gus Assistant"
+        "tooltip": "Pindai ulang model yang ditambahkan ke folder model atau cache Hugging Face dari luar Ghostbar"
       },
       "noModelsMatch": "Tidak ada model yang cocok dengan kriteria ini."
     },
@@ -293,11 +293,11 @@
       },
       "autostart": {
         "label": "Jalankan saat Komputer Dinyalakan",
-        "description": "Mulai Gus Assistant secara otomatis saat Anda masuk ke komputer."
+        "description": "Mulai Ghostbar secara otomatis saat Anda masuk ke komputer."
       },
       "showTrayIcon": {
         "label": "Tampilkan Ikon Baki Sistem",
-        "description": "Tampilkan ikon Gus Assistant di baki sistem."
+        "description": "Tampilkan ikon Ghostbar di baki sistem."
       },
       "overlay": {
         "style": {
@@ -502,8 +502,8 @@
       },
       "updateChecks": {
         "label": "Periksa Pembaruan",
-        "description": "Periksa versi baru Gus Assistant secara otomatis",
-        "lockedDescription": "Dinonaktifkan oleh konfigurasi sistem (GUS_ASSISTANT_DISABLE_UPDATER)"
+        "description": "Periksa versi baru Ghostbar secara otomatis",
+        "lockedDescription": "Dinonaktifkan oleh konfigurasi sistem (GHOSTBAR_DISABLE_UPDATER)"
       },
       "whatsNewPreview": {
         "title": "Pratinjau Yang Baru",
@@ -594,7 +594,7 @@
       },
       "keyboardDiagnostic": {
         "title": "Diagnostik Keyboard",
-        "description": "Memeriksa apakah peristiwa keyboard mencapai Gus Assistant. Hanya jumlah peristiwa yang dicatat — bukan tombol yang Anda tekan.",
+        "description": "Memeriksa apakah peristiwa keyboard mencapai Ghostbar. Hanya jumlah peristiwa yang dicatat — bukan tombol yang Anda tekan.",
         "run": "Jalankan diagnostik 10 dtk",
         "running": "Mendengarkan… tekan pintasan Anda beberapa kali (mis. Option+Space)",
         "secureInputLabel": "Secure Input",
@@ -608,7 +608,7 @@
         "mouse": "Mouse",
         "verdictBlocked": "Secure Input memblokir peristiwa tombol — pintasan keyboard tidak dapat berfungsi sampai masalah ini diselesaikan.",
         "verdictSuspicious": "Peristiwa tombol pengubah diterima, tetapi tidak ada peristiwa tombol — sesuatu memblokir input tombol meskipun Secure Input dilaporkan nonaktif. Harap laporkan ini di GitHub.",
-        "verdictOk": "Peristiwa tombol mencapai Gus Assistant secara normal.",
+        "verdictOk": "Peristiwa tombol mencapai Ghostbar secara normal.",
         "verdictNoEvents": "Tidak ada peristiwa yang tertangkap — apakah Anda menekan tombol selama pengujian?",
         "failed": "Diagnostik gagal: {{error}}"
       }
@@ -617,15 +617,15 @@
       "title": "Tentang",
       "version": {
         "title": "Versi",
-        "description": "Versi Gus Assistant saat ini"
+        "description": "Versi Ghostbar saat ini"
       },
       "whatsNewUpdates": {
         "label": "Tampilkan Yang Baru",
-        "description": "Tampilkan catatan rilis setelah Gus Assistant diperbarui"
+        "description": "Tampilkan catatan rilis setelah Ghostbar diperbarui"
       },
       "appDataDirectory": {
         "title": "Direktori Data Aplikasi",
-        "description": "Lokasi Gus Assistant menyimpan datanya"
+        "description": "Lokasi Ghostbar menyimpan datanya"
       },
       "sourceCode": {
         "title": "Kode Sumber",
@@ -634,7 +634,7 @@
       },
       "supportDevelopment": {
         "title": "Dukung Pengembangan",
-        "description": "Bantu kami terus mengembangkan Gus Assistant",
+        "description": "Ghostbar includes code by CJ Pais (MIT licence)",
         "button": "Donasi"
       },
       "acknowledgments": {
@@ -642,7 +642,7 @@
         "ggml": {
           "title": "ggml",
           "description": "Pustaka tensor berkinerja tinggi untuk inferensi pembelajaran mesin di perangkat",
-          "details": "Fitur ucapan-ke-teks lokal Gus Assistant dibangun menggunakan transcribe.cpp dan ggml. Terima kasih kepada Georgi Gerganov dan para kontributor atas karya luar biasa mereka."
+          "details": "Fitur ucapan-ke-teks lokal Ghostbar dibangun menggunakan transcribe.cpp dan ggml. Terima kasih kepada Georgi Gerganov dan para kontributor atas karya luar biasa mereka."
         }
       }
     }
@@ -663,7 +663,7 @@
     "portableUpdateBrowseButton": "Buka GitHub Releases"
   },
   "whatsNew": {
-    "title": "Baru di Gus Assistant v{{version}}"
+    "title": "Baru di Ghostbar v{{version}}"
   },
   "common": {
     "loading": "Memuat...",
@@ -675,7 +675,7 @@
     "noOptionsFound": "Tidak ada opsi yang ditemukan"
   },
   "accessibility": {
-    "permissionsDescription": "Gus Assistant memerlukan izin aksesibilitas untuk mengetik teks hasil transkripsi.",
+    "permissionsDescription": "Ghostbar memerlukan izin aksesibilitas untuk mengetik teks hasil transkripsi.",
     "openSettings": "Buka Pengaturan Sistem"
   },
   "errors": {
@@ -698,11 +698,11 @@
   },
   "appLanguage": {
     "title": "Bahasa Aplikasi",
-    "description": "Ubah bahasa antarmuka Gus Assistant"
+    "description": "Ubah bahasa antarmuka Ghostbar"
   },
   "theme": {
     "title": "Tema Aplikasi",
-    "description": "Pilih apakah Gus Assistant mengikuti tema sistem atau selalu menggunakan tema terang atau gelap",
+    "description": "Pilih apakah Ghostbar mengikuti tema sistem atau selalu menggunakan tema terang atau gelap",
     "options": {
       "system": "Sistem",
       "light": "Terang",

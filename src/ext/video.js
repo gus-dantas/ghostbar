@@ -34,7 +34,7 @@ function setUp(rec) {
   const markSaved = () => {
     $('#save').disabled = true;
     $('#save').innerHTML = `${ICONS.save}<span>Saved</span>`;
-    $('#save').title = 'Already in Downloads › Gus Assistant';
+    $('#save').title = 'Already in Downloads › Ghostbar';
   };
   if (rec.onDisk) markSaved(); // the app saves every recording as it stops
   // In the app the recording on disk is the only copy, so the button says what it does.
@@ -43,7 +43,7 @@ function setUp(rec) {
     markSaved();
     try {
       await saveBlob(rec.blob, `${stem}.${ext}`, false, { captureId: id, thumb: await videoThumb(url, 0.5) });
-      toast('Saved to Downloads › Gus Assistant');
+      toast('Saved to Downloads › Ghostbar');
     } catch (e) {
       $('#save').disabled = false;
       $('#save').innerHTML = `${ICONS.save}<span>Save ${ext.toUpperCase()}</span>`;
@@ -122,7 +122,7 @@ function setUpGif(url, player, stem, rec) {
     if (whole && (rec.onDisk || $('#save').disabled)) return toast('That is the whole recording, and it is already saved.');
     if (whole || !rec.mime.includes('mp4')) {
       await saveBlob(rec.blob, `${stem}.${rec.mime.includes('mp4') ? 'mp4' : 'webm'}`, false, { captureId: id, thumb: await videoThumb(url, 0.5) });
-      return toast('Saved to Downloads › Gus Assistant');
+      return toast('Saved to Downloads › Ghostbar');
     }
     $('#cut-save').disabled = true;
     $('#cut-progress').hidden = false;
@@ -134,7 +134,7 @@ function setUpGif(url, player, stem, rec) {
         $('#cut-pct').textContent = `Cutting… ${Math.round(f * 100)}%`;
       }, cutController.signal);
       await saveBlob(cut, `${stem} (${fmt(start)}–${fmt(end)}).mp4`, false, { captureId: id, thumb: await videoThumb(url, start + 0.3) });
-      toast(`Saved the part (${formatSize(cut.size)}) to Downloads › Gus Assistant`);
+      toast(`Saved the part (${formatSize(cut.size)}) to Downloads › Ghostbar`);
     } catch (err) {
       if (err.name !== 'AbortError') showError(`Couldn't cut the recording: ${err.message}`, '#cut-err');
     } finally {
@@ -175,7 +175,7 @@ function setUpGif(url, player, stem, rec) {
   $('#gif-save').addEventListener('click', async () => {
     if (!gifBlob) return;
     await saveBlob(gifBlob, `${stem}.gif`, false, { captureId: id });
-    toast('Saved to Downloads › Gus Assistant');
+    toast('Saved to Downloads › Ghostbar');
   });
 }
 

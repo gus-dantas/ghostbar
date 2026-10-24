@@ -1,4 +1,4 @@
-// Cast: Gus Assistant's video recorder. The screen (or one window) and the
+// Cast: Ghostbar's video recorder. The screen (or one window) and the
 // camera are captured separately and composited here, frame by frame, so the
 // face bubble, the 9:16 phone crop and its smooth moves land in the video
 // exactly as the preview shows them, whatever is on screen.

@@ -502,7 +502,7 @@ impl ShortcutAction for TranscribeAction {
         } else {
             VadPolicy::Offline
         };
-        // Gus Assistant's editor needs the live stream; it replaces the overlay.
+        // Ghostbar's editor needs the live stream; it replaces the overlay.
         let editor = model_supports_streaming && crate::dictation::enabled(app);
         if editor {
             crate::dictation::begin(app, &binding_id);
@@ -554,7 +554,7 @@ impl ShortcutAction for TranscribeAction {
                     // arming animation on hardware that normally starts too fast
                     // to make it visible.
                     #[cfg(debug_assertions)]
-                    if let Ok(delay_ms) = std::env::var("GUS_ASSISTANT_DEBUG_MIC_READY_DELAY_MS")
+                    if let Ok(delay_ms) = std::env::var("GHOSTBAR_DEBUG_MIC_READY_DELAY_MS")
                         .unwrap_or_default()
                         .parse::<u64>()
                     {
@@ -859,7 +859,7 @@ impl ShortcutAction for TranscribeAction {
 
                             error!("Transcription failed: {}", err);
                             // Surface the failure to the UI (toast). The full
-                            // message is also in gus-assistant.log via the line above.
+                            // message is also in ghostbar.log via the line above.
                             let _ = ah.emit("transcription-error", err.to_string());
                             // Save entry with empty text so user can retry
                             if wav_saved {
