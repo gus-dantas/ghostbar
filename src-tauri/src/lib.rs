@@ -15,6 +15,7 @@ mod proofread;
 mod refine;
 mod shell;
 mod sound_alikes;
+mod precheck;
 mod catalog;
 mod chinese_script;
 pub mod cli;

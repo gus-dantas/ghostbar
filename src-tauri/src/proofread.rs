@@ -73,10 +73,30 @@ fn apple_available() -> bool {
 
 /// The language a stretch of text starts in, between the two Gus speaks:
 /// the first sentence or so decides, so a Portuguese dictation with English
-/// words in it stays Portuguese.
+/// words in it stays Portuguese. Common little words decide first (they work
+/// on a short sentence, where statistics don't); whatlang breaks a tie.
 pub fn starting_language(text: &str) -> Option<&'static str> {
-    use whatlang::{Detector, Lang};
+    const PT: &[&str] = &[
+        "não", "que", "de", "da", "do", "das", "dos", "o", "os", "eu", "você", "pode", "para", "pra", "com", "uma", "um", "é", "está",
+        "tá", "isso", "esse", "essa", "mas", "em", "na", "nos", "ele", "ela", "gente", "também", "muito", "mais", "porque", "quando",
+        "como", "foi", "tem", "vai", "sim", "aqui", "agora", "então", "ótimo", "acho", "quero", "queria", "seu", "sua", "meu", "minha",
+    ];
+    const EN: &[&str] = &[
+        "the", "and", "you", "can", "is", "are", "to", "of", "it", "that", "this", "i", "we", "have", "with", "for", "be", "was",
+        "not", "what", "my", "your", "in", "on", "so", "but", "just", "like", "will", "would", "great", "should", "could", "there",
+    ];
     let start: String = text.chars().take(160).collect();
+    let lower = start.to_lowercase();
+    let (mut pt, mut en) = (0, 0);
+    for word in lower.split(|c: char| !c.is_alphanumeric()).filter(|w| !w.is_empty()) {
+        pt += PT.contains(&word) as i32;
+        en += EN.contains(&word) as i32;
+    }
+    pt += 2 * lower.chars().filter(|c| "ãõçâêôà".contains(*c)).count().min(2) as i32;
+    if pt != en {
+        return Some(if pt > en { "pt" } else { "en" });
+    }
+    use whatlang::{Detector, Lang};
     let info = Detector::with_allowlist(vec![Lang::Por, Lang::Eng]).detect(&start)?;
     Some(match info.lang() {
         Lang::Por => "pt",
@@ -103,12 +123,16 @@ fn keep(heard: &str, checked: &str, language: Option<&str>) -> Result<(), String
 }
 
 pub async fn proofread(app: &AppHandle, text: &str) -> Result<String, String> {
+    proofread_in(app, text, starting_language(text)).await
+}
+
+/// The check, held to a language decided elsewhere (the dictation's first words).
+pub async fn proofread_in(app: &AppHandle, text: &str, language: Option<&'static str>) -> Result<String, String> {
     let text = text.trim();
     if text.is_empty() {
         return Ok(String::new());
     }
     let started = Instant::now();
-    let language = starting_language(text);
     let user = format!("<transcript>\n{text}\n</transcript>");
     let mut system = instructions(app);
     if let Some(code) = language {
@@ -215,6 +239,8 @@ mod guard_tests {
         assert_eq!(starting_language("Ótimo, pode subir tudo no Github."), Some("pt"));
         assert_eq!(starting_language("Can you upload everything to GitHub?"), Some("en"));
         assert_eq!(starting_language("Eu queria Enable o Option da direita para poder falar no laptop"), Some("pt"));
+        assert_eq!(starting_language("Simpado subiu o commit para o Github."), Some("pt"));
+        assert_eq!(starting_language("Great, can you upload everything to GitHub?"), Some("en"));
     }
 
     #[test]

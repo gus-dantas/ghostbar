@@ -13,7 +13,7 @@ use log::{error, info, warn};
 use serde::Serialize;
 use specta::Type;
 use std::sync::atomic::{AtomicBool, AtomicI32, AtomicU64, Ordering};
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc, Mutex, OnceLock};
 use std::time::{Duration, Instant};
 use tauri::{AppHandle, Emitter, Manager, WebviewUrl};
 
@@ -49,15 +49,26 @@ pub fn session_text() -> String {
 
 /// Chunks the accurate pass hasn't answered yet.
 static REFINING: AtomicI32 = AtomicI32::new(0);
+/// For the second pass's answers, which arrive without one.
+static APP: OnceLock<AppHandle> = OnceLock::new();
 
 /// The accurate pass answered a chunk, with better text or none.
 pub fn refined(id: u64, text: Option<&str>) {
     let _ = REFINING.try_update(Ordering::AcqRel, Ordering::Acquire, |n| Some((n - 1).max(0)));
-    let Some(text) = text.filter(|t| !t.trim().is_empty()) else { return };
+    let Some(text) = text.filter(|t| !t.trim().is_empty()) else {
+        if let Some(app) = APP.get() {
+            crate::precheck::feed(app, &session_text());
+        }
+        return;
+    };
     if let Ok(mut s) = SESSION.lock() {
         if let Some(entry) = s.iter_mut().find(|(i, _)| *i == id) {
             entry.1 = text.to_string();
         }
+    }
+    // The sentences this settled can be checked while he keeps talking.
+    if let Some(app) = APP.get() {
+        crate::precheck::feed(app, &session_text());
     }
 }
 
@@ -120,11 +131,13 @@ fn set_phase(app: &AppHandle, phase: &'static str) {
 
 /// Recording starts: open the panel (or keep adding to the open one).
 pub fn begin(app: &AppHandle, binding_id: &str) {
+    let _ = APP.set(app.clone());
     ACTIVE.store(true, Ordering::Release);
     *BINDING.lock().unwrap() = binding_id.to_string();
     if !OPEN.swap(true, Ordering::AcqRel) {
         RECORDINGS.lock().unwrap().clear();
         SESSION.lock().unwrap().clear();
+        crate::precheck::reset();
         remember_target();
     }
     if crate::refine::model_id(app).is_some() {
@@ -160,6 +173,8 @@ pub fn chunk(app: &AppHandle, pcm: Vec<f32>, text: String, last: bool) {
     let _ = app.emit_to(LABEL, "dictation-chunk", Chunk { id, text: text.clone(), refining, last });
     if refining {
         crate::refine::queue(app, id, pcm, text);
+    } else {
+        crate::precheck::feed(app, &session_text());
     }
 }
 
@@ -184,6 +199,7 @@ pub fn abort(app: &AppHandle) {
     }
     OPEN.store(false, Ordering::Release);
     SESSION.lock().unwrap().clear();
+    crate::precheck::reset();
     set_phase(app, "idle");
     hide(app);
 }
@@ -355,6 +371,7 @@ fn save_history(app: &AppHandle, raw: &str, proofread: Option<&str>) {
 fn close(app: &AppHandle) {
     OPEN.store(false, Ordering::Release);
     SESSION.lock().unwrap().clear();
+    crate::precheck::reset();
     set_phase(app, "idle");
     hide(app);
 }
@@ -419,18 +436,11 @@ pub async fn dictation_finish(app: AppHandle, text: String, proofread: bool) -> 
     // The words the model always mishears are fixed first (sound_alikes.txt),
     // so the check starts from the right names.
     let fixed = crate::sound_alikes::fix(&app, &raw);
+    // Most sentences were checked while he talked (precheck.rs); only the rest
+    // waits now. A part whose check fails goes in as heard.
     let output = if proofread && crate::proofread::engine(&app) != "none" {
         set_phase(&app, "proofreading");
-        match crate::proofread::proofread(&app, &fixed).await {
-            Ok(t) if !t.is_empty() => t,
-            Ok(_) => fixed.clone(),
-            // Nothing waits on a key any more, so a failed check pastes the
-            // text as heard instead of holding it back.
-            Err(e) => {
-                warn!("dictation: check failed, pasting as heard: {e}");
-                fixed.clone()
-            }
-        }
+        crate::precheck::check(&app, &fixed).await
     } else {
         fixed.clone()
     };
