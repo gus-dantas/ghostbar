@@ -1,0 +1,26 @@
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: transparent; overflow: hidden; }
+body { padding: 6px; color: #f1efe9; font: 15px/1.35 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; user-select: none; }
+.card { height: 100%; display: flex; flex-direction: column; padding: 14px 18px 12px; border-radius: 16px; background: #0f1012;
+        border: 1px solid #2a2c31; box-shadow: 0 14px 40px rgba(0,0,0,.5); position: relative; overflow: hidden; }
+.top { display: flex; align-items: center; gap: 10px; color: #8d9096; font-size: 12px; font-weight: 600; letter-spacing: .02em; cursor: grab; }
+.rec { width: 9px; height: 9px; border-radius: 50%; background: #e03131; animation: p 1.2s ease-in-out infinite; }
+.rec.off { background: #555; animation: none; }
+@keyframes p { 50% { opacity: .3; } }
+.bar { flex: 1; height: 3px; background: #2a2c31; border-radius: 3px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: #ffc233; transition: width .25s; }
+.title { margin: 12px 0 8px; font-size: 26px; font-weight: 750; letter-spacing: -.01em; line-height: 1.15; text-wrap: balance; }
+.cues { display: flex; flex-wrap: wrap; gap: 6px 8px; }
+.cue { background: #1d1f23; border: 1px solid #2c2f35; border-radius: 9px; padding: 5px 10px; font-size: 17px; font-weight: 600; color: #ffd36b; }
+.next { margin-top: auto; padding-top: 10px; color: #7b7f86; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.next b { color: #a6a9ae; font-weight: 600; }
+.row { display: flex; gap: 6px; margin-top: 10px; }
+button { font: inherit; font-weight: 650; border-radius: 10px; border: 1px solid #2c2f35; background: #1d1f23; color: #f1efe9; height: 38px; padding: 0 12px; cursor: pointer; }
+button:hover { border-color: #444851; }
+button.go { flex: 1; background: #ffc233; border-color: #ffc233; color: #1a1405; }
+.flash { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(15,16,18,.92); font-size: 22px; font-weight: 700;
+         opacity: 0; pointer-events: none; transition: opacity .2s; text-align: center; padding: 20px; }
+.flash.on { opacity: 1; }
+.flash small { display: block; margin-top: 6px; font-size: 14px; font-weight: 500; color: #a6a9ae; }
+.keys { color: #5d6067; font-size: 11px; margin-top: 6px; text-align: center; }

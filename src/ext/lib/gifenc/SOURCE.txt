@@ -1,0 +1,2 @@
+gifenc 1.0.3 by Matt DesLauriers (MIT), src/ copied unmodified from the npm tarball
+(sha512-xdr6AdrfGBcfzncONUOlXMBuc5wJDtOueE3c5rdG0oNgtINLD+f2iFZltrBRZYzACRbKr+mSVU/x98zv2u3jmw==).

@@ -1,0 +1,74 @@
+/* The after-capture card: a small glass card in the bottom-left corner. The
+   window is bigger than the card so its shadow has room (SIZE in capture_card.rs). */
+html, body { background: transparent !important; height: 100%; overflow: hidden; margin: 0; user-select: none; -webkit-user-select: none; }
+body { padding: 12px; display: flex; flex-direction: column; justify-content: flex-end; cursor: default; }
+
+.card {
+  position: relative; display: flex; flex-direction: column; gap: 6px; padding: 6px;
+  border-radius: 14px; background: rgba(15, 28, 27, .8); border: 1px solid rgba(232, 241, 240, .1);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .38), 0 0 0 .5px rgba(0, 0, 0, .4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4); backdrop-filter: blur(18px) saturate(1.4);
+  overflow: hidden; animation: rise .22s cubic-bezier(.2, .8, .2, 1);
+}
+.card.leaving { animation: fall .18s ease-in forwards; }
+@keyframes rise { from { opacity: 0; transform: translateY(10px) scale(.98); } }
+@keyframes fall { to { opacity: 0; transform: translateY(8px) scale(.98); } }
+
+.thumb {
+  position: relative; height: 130px; border-radius: 9px; overflow: hidden; cursor: grab;
+  background: rgba(0, 0, 0, .35) repeating-conic-gradient(rgba(255, 255, 255, .03) 0 25%, transparent 0 50%) 0 0 / 14px 14px;
+}
+.thumb:active { cursor: grabbing; }
+.thumb img { width: 100%; height: 100%; object-fit: contain; display: block; pointer-events: none; }
+.thumb img:not([src]) { visibility: hidden; }
+/* Text from the screen: what was read, small enough to check at a glance. */
+.read {
+  position: absolute; inset: 0; overflow: hidden; padding: 8px 10px; background: rgba(255, 255, 255, .94); color: #1d1d22;
+  font: 11px/1.4 -apple-system, BlinkMacSystemFont, sans-serif; white-space: pre-wrap; word-break: break-word; cursor: default;
+  -webkit-mask-image: linear-gradient(#000 78%, transparent);
+}
+.thumb.text { background: rgba(255, 255, 255, .94); cursor: default; }
+.read.empty { display: grid; place-items: center; color: #6b6d78; -webkit-mask-image: none; }
+.read table { border-collapse: collapse; width: 100%; font-size: 10.5px; }
+.read th, .read td { border: 1px solid #d7d8de; padding: 2px 5px; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90px; }
+.read th { background: #eef0f5; font-weight: 600; }
+.acts button:disabled { opacity: .4; cursor: default; }
+.tag {
+  position: absolute; left: 6px; bottom: 6px; padding: 1px 6px; border-radius: 5px;
+  background: rgba(0, 0, 0, .55); color: #fff; font: 600 10px/16px -apple-system, sans-serif;
+}
+.tag:empty { display: none; }
+.x {
+  position: absolute; top: 6px; right: 6px; width: 20px; height: 20px; padding: 0; border: 0; border-radius: 50%;
+  display: grid; place-items: center; background: rgba(0, 0, 0, .55); color: rgba(255, 255, 255, .9); cursor: pointer;
+  opacity: .0; transition: opacity .12s;
+}
+.x svg { width: 11px; height: 11px; }
+body.hover .x { opacity: 1; }
+.x:hover { background: rgba(0, 0, 0, .8); }
+
+.meta { display: flex; align-items: baseline; gap: 8px; padding: 0 4px; min-width: 0; }
+.title { font-weight: 600; font-size: 12px; color: var(--text); white-space: nowrap; }
+.hint { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.acts { display: flex; gap: 4px; }
+.acts button {
+  flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 5px; height: 28px; padding: 0 6px;
+  border: 0; border-radius: 7px; background: rgba(255, 255, 255, .07); color: var(--text);
+  font: 500 11.5px -apple-system, BlinkMacSystemFont, sans-serif; cursor: pointer; white-space: nowrap;
+}
+.acts button.icon { flex: 0 0 32px; }
+.acts button:hover { background: rgba(255, 255, 255, .14); }
+.acts button:active { background: rgba(255, 255, 255, .2); }
+.acts button.done { color: #8ce99a; }
+.acts button.danger:hover { background: rgba(240, 62, 62, .3); }
+.acts button.undo { flex: 1; font-weight: 600; background: rgba(255, 255, 255, .16); }
+.acts svg { width: 14px; height: 14px; flex: none; }
+
+/* The countdown: a hairline that runs out, held while the pointer is on the card. */
+.life {
+  position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: var(--accent); opacity: .7;
+  transform-origin: left; animation: life var(--life, 7s) linear forwards;
+}
+body.hover .life { animation-play-state: paused; }
+@keyframes life { to { transform: scaleX(0); } }

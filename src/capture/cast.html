@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Gus Assistant Cast</title>
+  <link rel="stylesheet" href="../ext/ui.css">
+  <link rel="stylesheet" href="./cast.css">
+</head>
+<body>
+  <main class="card" id="card">
+    <section id="setup">
+      <header class="head" data-tauri-drag-region>
+        <span class="dot"></span><b data-tauri-drag-region>Cast</b>
+        <span class="sub-title" data-tauri-drag-region>screen + face</span>
+        <span class="spacer" data-tauri-drag-region></span>
+        <button class="icon-btn close" id="close" title="Close">×</button>
+      </header>
+
+      <div class="perm" id="perm" hidden>
+        <p>Gus Assistant needs permission to record the screen.</p>
+        <div class="perm-actions">
+          <button class="btn" id="perm-btn">1. Open the setting</button>
+          <button class="btn primary" id="perm-reopen">2. It's on: reopen the app</button>
+        </div>
+        <p class="tip">Turn Gus Assistant on in the list. macOS only applies it after the app reopens.</p>
+      </div>
+
+      <div class="group">
+        <div class="seg wide" id="kind" role="radiogroup" aria-label="What to record">
+          <button type="button" data-kind="display" role="radio">Screen</button>
+          <button type="button" data-kind="window" role="radio">Window</button>
+        </div>
+        <div class="chips" id="screens"></div>
+        <div class="windows" id="windows" hidden></div>
+      </div>
+
+      <div class="group">
+        <div class="seg wide" id="format" role="radiogroup" aria-label="Format">
+          <button type="button" data-format="landscape" role="radio">Landscape</button>
+          <button type="button" data-format="vertical" role="radio">Vertical 9:16 · mobile</button>
+        </div>
+      </div>
+
+      <div class="preview land" id="land" title="Drag to place your face">
+        <img id="out-land" alt="">
+        <p class="empty" id="land-empty">Starting the preview…</p>
+      </div>
+      <div class="preview vert" id="vert" hidden>
+        <div class="src-wrap" id="src-wrap" title="Drag to choose what the phone shows · scroll to zoom">
+          <img id="src-img" alt=""><div class="crop" id="crop"></div>
+        </div>
+        <div class="phone-wrap" id="phone-wrap" title="Drag to place your face"><img id="out-vert" alt=""></div>
+      </div>
+      <p class="tip center" id="place-tip"></p>
+
+      <label class="opt"><input type="checkbox" id="mic"> <span>Microphone</span></label>
+      <label class="opt"><input type="checkbox" id="sys"> <span>Sound from the computer</span></label>
+      <label class="opt"><input type="checkbox" id="cam"> <span>My face in a bubble</span></label>
+      <div class="sub-opts" id="cam-opts" hidden>
+        <div class="row"><span class="label">Size</span><div class="seg" id="sizes"></div></div>
+        <div class="row"><span class="label">Face zoom</span><input type="range" id="face" min="1" max="2.5" step="0.05"></div>
+      </div>
+      <label class="opt"><input type="checkbox" id="prompt"> <span>Prompter: cue cards per block</span></label>
+      <div class="sub-opts" id="prompt-opts" hidden>
+        <textarea id="blocks" rows="6" spellcheck="false" aria-label="Blocks"></textarea>
+        <p class="tip">One block per paragraph: the question it answers, then 2–3 words to remember. The prompter floats on screen and stays out of the video.</p>
+        <button type="button" class="text-btn" id="silvia">Load the Silvia blocks</button>
+      </div>
+      <label class="opt"><input type="checkbox" id="countdown"> <span>Count down 3, 2, 1</span></label>
+
+      <button class="btn primary big" id="start">Start recording</button>
+      <button class="text-btn chrome" id="chrome" hidden>Record a Chrome tab in the extension instead</button>
+      <p class="err" id="err" hidden></p>
+      <p class="hint" id="hint">Nothing of Cast's own is ever in the video.</p>
+    </section>
+
+    <section id="counting" hidden>
+      <div class="count" id="count">3</div>
+    </section>
+
+    <section id="live" hidden>
+      <div class="bar" id="bar">
+        <div class="grip" data-tauri-drag-region title="Drag to move"></div>
+        <span class="dot pulse" id="rec-dot"></span>
+        <span class="time" id="time" data-tauri-drag-region>0:00</span>
+        <button class="icon-btn" id="pause" title="Pause"></button>
+        <button class="icon-btn" id="restart" title="Throw this take away and start again">↺</button>
+        <button class="icon-btn" id="discard" title="Stop and throw it away"></button>
+        <button class="btn danger stop" id="stop"></button>
+      </div>
+      <div class="steer" id="steer" hidden></div>
+    </section>
+
+    <section id="saving" hidden>
+      <p class="saving">Saving the video…</p>
+    </section>
+  </main>
+  <script type="module" src="./cast.js"></script>
+</body>
+</html>

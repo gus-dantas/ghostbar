@@ -1,0 +1,72 @@
+:root {
+  --bg: #111216;
+  --panel: #1a1b20;
+  --panel-2: #24252b;
+  --line: #2e3037;
+  --text: #ececf1;
+  --muted: #9a9ca8;
+  --accent: #4c6ef5;
+  --accent-2: #5c7cfa;
+  --danger: #f03e3e;
+  --radius: 8px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 13px/1.4 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; color: inherit; }
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 32px; padding: 0 12px; border-radius: var(--radius);
+  border: 1px solid var(--line); background: var(--panel-2); cursor: pointer;
+  font-weight: 600; white-space: nowrap;
+}
+.btn:hover { background: #2c2e35; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary:hover { background: var(--accent-2); }
+.btn svg, .icon-btn svg { width: 16px; height: 16px; flex: none; }
+.icon-btn {
+  display: inline-grid; place-items: center; width: 32px; height: 32px;
+  border-radius: var(--radius); border: 0; background: transparent; cursor: pointer;
+  font-size: 18px; line-height: 1;
+}
+.icon-btn:hover { background: var(--panel-2); }
+.icon-btn[aria-pressed="true"] { background: var(--accent); color: #fff; }
+.icon-btn:disabled { opacity: .35; cursor: default; background: transparent; }
+.text-btn { height: 28px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; cursor: pointer; color: var(--muted); font-weight: 600; }
+.text-btn:hover { background: var(--panel-2); color: var(--text); }
+#toast {
+  position: fixed; left: 50%; bottom: 44px; transform: translate(-50%, 12px);
+  padding: 9px 14px; border-radius: 999px; background: #f1f3f5; color: #15161a;
+  font-weight: 600; box-shadow: 0 8px 30px rgba(0,0,0,.35);
+  opacity: 0; pointer-events: none; transition: opacity .18s, transform .18s; z-index: 50;
+}
+#toast.show { opacity: 1; transform: translate(-50%, 0); }
+#toast.error { background: var(--danger); color: #fff; }
+.lib-link { display: inline-flex; align-items: center; text-decoration: none; }
+
+/* ---- Gus Assistant (app only): the ghostavo.com dark palette over the extension's ui.css.
+   scripts/sync-extension.mjs appends this file to src/ext/ui.css on every sync, so the
+   shared pages and the floating panels match the app while the extension keeps its own. ---- */
+@font-face { font-family: "IBM Plex Mono"; font-weight: 400; font-display: swap; src: url(../assets/fonts/ibm-plex-mono-400-latin.woff2) format("woff2"); }
+:root {
+  --bg: #0A1413;
+  --panel: #0F1C1B;
+  --panel-2: #152322;
+  --line: #1F2F2E;
+  --text: #E8F1F0;
+  --muted: #93A5A3;
+  --accent: #50C1B1;
+  --accent-2: #6FD0C2;
+  --danger: #FF7A85;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+.btn:hover { background: #1F2F2E; }
+.btn.primary { color: #0A1413; }
+.icon-btn[aria-pressed="true"] { color: #0A1413; }

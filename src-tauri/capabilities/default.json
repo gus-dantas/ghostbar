@@ -1,0 +1,65 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Capabilities for the app",
+  "windows": [
+    "main",
+    "recording_overlay",
+    "bubble",
+    "prompter",
+    "viewer-*",
+    "dictation",
+    "cast",
+    "capture-card",
+    "settings"
+  ],
+  "permissions": [
+    "core:default",
+    "fs:allow-mkdir",
+    "fs:allow-exists",
+    "fs:allow-write-file",
+    "core:window:allow-set-ignore-cursor-events",
+    "core:window:allow-inner-size",
+    "core:window:allow-outer-position",
+    "core:window:allow-cursor-position",
+    "core:window:allow-close",
+    "core:window:allow-set-position",
+    "core:window:allow-set-size",
+    "core:window:allow-start-dragging",
+    "core:window:allow-set-focus",
+    "core:window:allow-show",
+    "core:window:allow-hide",
+    "opener:default",
+    "store:default",
+    "process:default",
+    "dialog:default",
+    "global-shortcut:allow-is-registered",
+    "global-shortcut:allow-register",
+    "global-shortcut:allow-unregister",
+    "global-shortcut:allow-unregister-all",
+    "macos-permissions:default",
+    "fs:read-files",
+    "fs:allow-resource-read-recursive",
+    {
+      "identifier": "fs:scope",
+      "allow": [
+        {
+          "path": "$APPDATA"
+        },
+        {
+          "path": "$APPDATA/**/*"
+        },
+        {
+          "path": "$DOWNLOAD/Gus Assistant"
+        },
+        {
+          "path": "$DOWNLOAD/Gus Assistant/**"
+        }
+      ]
+    },
+    "core:window:allow-scale-factor",
+    "core:window:allow-outer-size",
+    "drag:default",
+    "clipboard-manager:allow-write-text"
+  ]
+}

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Gus Assistant Capture</title>
+  <link rel="stylesheet" href="../ext/ui.css">
+  <link rel="stylesheet" href="./card.css">
+</head>
+<body>
+  <main class="card" id="card" hidden>
+    <div class="thumb" id="thumb" draggable="true" title="Drag it into any app · click to preview">
+      <img id="img" alt="" draggable="false">
+      <div class="read" id="read" hidden></div>
+      <span class="tag" id="tag"></span>
+      <button class="x" id="close" title="Close" aria-label="Close"></button>
+    </div>
+    <div class="meta">
+      <span class="title" id="title"></span>
+      <span class="hint" id="hint"></span>
+    </div>
+    <div class="acts">
+      <button id="copy"></button>
+      <button id="open"></button>
+      <button id="reveal"></button>
+      <button id="bin" class="icon" title="Move to the Bin" aria-label="Move to the Bin"></button>
+    </div>
+    <i class="life" id="life"></i>
+  </main>
+  <script type="module" src="./card.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+
+/* ---- Gus Assistant (app only): the ghostavo.com dark palette over the extension's ui.css.
+   scripts/sync-extension.mjs appends this file to src/ext/ui.css on every sync, so the
+   shared pages and the floating panels match the app while the extension keeps its own. ---- */
+@font-face { font-family: "IBM Plex Mono"; font-weight: 400; font-display: swap; src: url(../assets/fonts/ibm-plex-mono-400-latin.woff2) format("woff2"); }
+:root {
+  --bg: #0A1413;
+  --panel: #0F1C1B;
+  --panel-2: #152322;
+  --line: #1F2F2E;
+  --text: #E8F1F0;
+  --muted: #93A5A3;
+  --accent: #50C1B1;
+  --accent-2: #6FD0C2;
+  --danger: #FF7A85;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+.btn:hover { background: #1F2F2E; }
+.btn.primary { color: #0A1413; }
+.icon-btn[aria-pressed="true"] { color: #0A1413; }

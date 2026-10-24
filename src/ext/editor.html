@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Gus Assistant</title>
+  <link rel="icon" href="icons/icon32.png">
+  <link rel="stylesheet" href="ui.css">
+  <link rel="stylesheet" href="editor.css">
+</head>
+<body>
+  <header class="bar">
+    <div class="brand"><img src="icons/icon32.png" alt=""><span>Gus Assistant</span></div>
+    <div class="group" id="tools" role="toolbar" aria-label="Tools"></div>
+    <div class="divider"></div>
+    <div class="group" id="colors" aria-label="Colour"></div>
+    <div class="divider"></div>
+    <div class="group" id="sizes" aria-label="Size"></div>
+    <div class="spacer"></div>
+    <div class="group">
+      <button class="icon-btn" id="undo" title="Undo (⌘Z)"></button>
+      <button class="icon-btn" id="redo" title="Redo (⇧⌘Z)"></button>
+    </div>
+    <div class="divider"></div>
+    <div class="group zoom">
+      <button class="icon-btn" id="zoom-out" title="Zoom out">−</button>
+      <span id="zoom-label">100%</span>
+      <button class="icon-btn" id="zoom-in" title="Zoom in">+</button>
+      <button class="text-btn" id="zoom-fit" title="Fit to width">Fit</button>
+    </div>
+    <div class="divider"></div>
+    <a class="text-btn lib-link" href="library.html" target="_blank" title="All your captures and recordings">Library</a>
+    <div class="group">
+      <button class="btn" id="save" title="Save to Downloads/Gus Assistant (⌘S) · ⇧-click to choose where"></button>
+      <button class="btn primary" id="copy" title="Copy to clipboard (⌘C)"></button>
+    </div>
+  </header>
+
+  <main id="stage">
+    <div id="viewport">
+      <div id="board">
+        <canvas id="scene"></canvas>
+        <textarea id="text-input" wrap="off" spellcheck="false" hidden></textarea>
+      </div>
+    </div>
+    <canvas id="draft"></canvas>
+    <div id="empty" hidden>
+      <div class="empty-card">
+        <div class="empty-icon"></div>
+        <p class="empty-title" id="empty-title">Paste or drop an image to annotate</p>
+        <p class="empty-sub">⌘V to paste · or drag a PNG or JPG here · or <label class="link">choose a file<input type="file" id="file" accept="image/*" hidden></label></p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="status">
+    <span id="dims"></span>
+    <span id="crop-info" hidden></span>
+    <span id="note" class="warn" hidden></span>
+    <span class="spacer"></span>
+    <span class="hint">⌘C copy · ⌘S save · ⌘Z undo · V A R O P T H B N C switch tools</span>
+  </footer>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="editor.js"></script>
+</body>
+</html>

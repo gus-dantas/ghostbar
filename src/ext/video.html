@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Screen recording · Gus Assistant</title>
+  <link rel="icon" href="icons/icon32.png">
+  <link rel="stylesheet" href="ui.css">
+  <link rel="stylesheet" href="video.css">
+</head>
+<body>
+  <header class="bar">
+    <div class="brand"><img src="icons/icon32.png" alt=""><span>Gus Assistant</span></div>
+    <span class="meta" id="meta"></span>
+    <span class="spacer"></span>
+    <a class="text-btn lib-link" href="library.html" target="_blank" title="All your captures and recordings">Library</a>
+    <button class="btn" id="delete"></button>
+    <button class="btn" id="save-as">Save MP4 as…</button>
+    <button class="btn primary" id="save"></button>
+  </header>
+  <main>
+    <section class="player">
+      <video id="player" controls playsinline></video>
+      <p class="empty" id="empty" hidden>This recording has expired.</p>
+    </section>
+
+    <aside class="panel" id="gif">
+      <h2>Part of the recording</h2>
+      <div class="field">
+        <div class="trim">
+          <input type="number" id="gif-start" min="0" step="0.1" aria-label="Start (seconds)">
+          <span>to</span>
+          <input type="number" id="gif-end" min="0" step="0.1" aria-label="End (seconds)">
+          <span>sec</span>
+        </div>
+        <div class="trim-btns">
+          <button class="text-btn" id="set-start" title="Start where the player is now">Start here</button>
+          <button class="text-btn" id="set-end" title="End where the player is now">End here</button>
+          <button class="text-btn" id="set-all" title="The whole recording">Whole</button>
+        </div>
+      </div>
+
+      <section class="out">
+        <h3>MP4</h3>
+        <button class="btn wide" id="cut-save"></button>
+        <p class="hint" id="cut-hint">Cuts on the exact frame. The sound is kept as recorded.</p>
+        <div id="cut-progress" hidden>
+          <div class="track"><i id="cut-bar"></i></div>
+          <div class="progress-row"><span id="cut-pct">Cutting…</span><button class="text-btn" id="cut-cancel">Cancel</button></div>
+        </div>
+        <p class="err" id="cut-err" hidden></p>
+      </section>
+
+      <section class="out">
+        <h3>GIF</h3>
+        <div class="field">
+          <span class="label">Width</span>
+          <div class="seg" id="gif-width" role="radiogroup" aria-label="GIF width"></div>
+        </div>
+        <div class="field">
+          <span class="label">Frames per second</span>
+          <div class="seg" id="gif-fps" role="radiogroup" aria-label="Frames per second"></div>
+        </div>
+        <label class="opt"><input type="checkbox" id="gif-loop" checked> <span>Loop forever</span></label>
+        <button class="btn primary wide" id="gif-make">Create GIF</button>
+        <div id="gif-progress" hidden>
+          <div class="track"><i id="gif-bar"></i></div>
+          <div class="progress-row"><span id="gif-pct">Preparing…</span><button class="text-btn" id="gif-cancel">Cancel</button></div>
+        </div>
+        <div id="gif-result" hidden>
+          <img id="gif-img" alt="GIF preview">
+          <p class="gif-meta" id="gif-meta"></p>
+          <button class="btn primary wide" id="gif-save"></button>
+        </div>
+        <p class="err" id="gif-err" hidden></p>
+      </section>
+    </aside>
+  </main>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="video.js"></script>
+</body>
+</html>

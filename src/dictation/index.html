@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Gus Assistant Dictation</title>
+  <link rel="stylesheet" href="../ext/ui.css">
+  <link rel="stylesheet" href="./dictation.css">
+</head>
+<body>
+  <main class="card">
+    <div id="doc" contenteditable="plaintext-only" spellcheck="true" data-placeholder="Listening… or type"></div>
+    <footer data-tauri-drag-region>
+      <span class="state" id="state" data-tauri-drag-region><i class="dot"></i><span id="state-text">Listening</span></span>
+      <span class="spacer" data-tauri-drag-region></span>
+      <button class="key" id="paste" title="Paste as written"><kbd>↵</kbd> paste</button>
+      <button class="key" id="proof" title="Proofread, then paste"><kbd>⌘↵</kbd> proofread</button>
+      <button class="key" id="close" title="Close without pasting (kept in History)"><kbd>esc</kbd></button>
+    </footer>
+    <p class="err" id="err" hidden></p>
+  </main>
+  <script type="module" src="./dictation.js"></script>
+</body>
+</html>

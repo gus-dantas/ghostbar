@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs><linearGradient id="tile" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#17302E"/><stop offset="1" stop-color="#0E1C1B"/></linearGradient></defs>
+  <rect x="100" y="100" width="824" height="824" rx="184" fill="url(#tile)"/>
+  <g fill="none" stroke="#4B6A96" stroke-width="40" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M222 314 V222 H314"/><path d="M802 314 V222 H710"/>
+    <path d="M222 710 V802 H314"/><path d="M802 710 V802 H710"/>
+  </g>
+  <path d="M332 716 V466 A180 180 0 0 1 692 466 V716 a60 48 0 0 1 -120 0 a60 48 0 0 1 -120 0 a60 48 0 0 1 -120 0Z" fill="#50C1B1"/>
+  <ellipse cx="456" cy="470" rx="30" ry="42" fill="#0E1C1B"/>
+  <ellipse cx="568" cy="470" rx="30" ry="42" fill="#0E1C1B"/>
+  <circle cx="676" cy="318" r="40" fill="#EE8A50" stroke="#122624" stroke-width="16"/>
+</svg>
