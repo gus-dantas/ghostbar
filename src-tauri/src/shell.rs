@@ -33,6 +33,7 @@ fn open_page(app: &AppHandle, page: &str, path: &str, title: &str, size: (f64, f
     let url = format!("src/ext/{page}?id={}", encode(path));
     let built = WebviewWindowBuilder::new(app, &label, WebviewUrl::App(url.into()))
         .title(title)
+        .theme(Some(tauri::Theme::Light))
         .inner_size(size.0, size.1)
         .min_inner_size(720.0, 480.0)
         .resizable(true)
@@ -92,6 +93,7 @@ pub fn open_settings(app: &AppHandle, page: Option<&str>) {
         let url = if page.is_empty() { "src/settings/index.html".to_string() } else { format!("src/settings/index.html?page={page}") };
         let mut builder = WebviewWindowBuilder::new(&app2, "settings", WebviewUrl::App(url.into()))
             .title("Settings")
+            .theme(Some(tauri::Theme::Light))
             .inner_size(760.0, 640.0)
             .min_inner_size(620.0, 460.0)
             .resizable(true);

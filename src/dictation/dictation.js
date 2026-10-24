@@ -1,7 +1,8 @@
 // The live dictation editor. Speech lands where the caret is, one span per
 // stretch between pauses; the accurate model's second pass replaces a span
-// unless Gus edited it. Enter pastes, Cmd+Enter proofreads then pastes,
-// Escape closes (History keeps the text).
+// unless Gus edited it. When the dictation key ends the recording (released,
+// or tapped again), the text gets one check against his words and is pasted:
+// no Enter. Enter still finishes early; Escape closes (History keeps the text).
 import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import { getCurrentWindow, LogicalPosition, LogicalSize } from '@tauri-apps/api/window';
@@ -10,7 +11,8 @@ import { getCurrentWindow, LogicalPosition, LogicalSize } from '@tauri-apps/api/
 const $ = (s) => document.querySelector(s);
 const doc = $('#doc');
 const LABELS = {
-  idle: 'Ready', listening: 'Listening', finishing: 'Finishing…', review: 'Ready', proofreading: 'Proofreading…',
+  idle: 'Ready', listening: 'Listening', finishing: 'Finishing…', review: 'Checking…', proofreading: 'Checking…',
+  pasting: 'Pasting…',
 };
 
 let phase = 'idle';
@@ -190,15 +192,16 @@ function setPhase(p) {
   phase = p;
   document.body.dataset.phase = p;
   $('#state-text').textContent = LABELS[p] || p;
-  const busy = p === 'proofreading';
-  $('#paste').disabled = busy;
-  $('#proof').disabled = busy;
   if (p === 'idle') reset();
   if (p === 'listening') {
     showError(null);
     focusEnd();
   }
-  if (p === 'review') recover();
+  if (p === 'review') {
+    recover();
+    // The key ended it: check and paste on its own once the last words are in.
+    if (!action) action = 'proof';
+  }
   settle();
 }
 
@@ -226,11 +229,11 @@ listen('dictation-phase', ({ payload }) => setPhase(payload));
 
 // Run a waiting Enter once the last chunk and its second pass are in.
 function settle() {
-  if (phase === 'review' && pending > 0) $('#state-text').textContent = 'Ready · improving the last words…';
+  if (phase === 'review' && pending > 0) $('#state-text').textContent = 'Checking · the last words…';
   if (!action || phase !== 'review') return;
   if (pending > 0) {
     clearTimeout(forceTimer);
-    forceTimer = setTimeout(() => run(action), 5000);
+    forceTimer = setTimeout(() => run(action), 3000);
     return;
   }
   run(action);
@@ -267,16 +270,12 @@ function showError(text) {
 doc.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && !e.shiftKey && !e.altKey) {
     e.preventDefault();
-    act(e.metaKey || e.ctrlKey ? 'proof' : 'raw');
+    act('proof');
   } else if (e.key === 'Escape') {
     e.preventDefault();
     invoke('dictation_close', { text: plain(doc.innerText) });
   }
 });
-$('#paste').addEventListener('mousedown', (e) => e.preventDefault());
-$('#proof').addEventListener('mousedown', (e) => e.preventDefault());
-$('#paste').addEventListener('click', () => act('raw'));
-$('#proof').addEventListener('click', () => act('proof'));
 $('#close').addEventListener('click', () => invoke('dictation_close', { text: plain(doc.innerText) }));
 window.addEventListener('focus', () => {
   syncPhase();
@@ -320,9 +319,4 @@ new MutationObserver(() => requestAnimationFrame(fit)).observe($('#err'), { attr
 
 // ---------- boot ----------
 
-invoke('dictation_state').then((s) => {
-  $('#proof').title = s.proofreader === 'none'
-    ? 'Proofreading needs an Anthropic key (Settings › Post-processing)'
-    : `Proofread with ${s.proofreader}, then paste`;
-  setPhase(s.phase);
-});
+invoke('dictation_state').then((s) => setPhase(s.phase));

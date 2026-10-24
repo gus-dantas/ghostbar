@@ -153,9 +153,20 @@ mod tests {
     fn proofread_apple() {
         let dictated = "Can we explore ways of having the better model that one of the highest accuracy rate for Portuguese and English, but ideally seeing it real time and being able to interact with the text. So when I were this mispronounced, or it's something that needs to be typed without interrupting anything and just type it and it gets added also a lot of the times after I dictate here I copy the test and I paste on a proofread chat that I have in the chat session of cloud and that pretty much simplifies, correct any issue, increase clarity, break down correctly it doesn't change my prompt massively, but it improves it quite a bit so it'll be great as well that every time I finish dictating I have the option for both but done with the lightest model so it happens like real quick does that make sense";
         println!("available: {}", crate::apple_intelligence::check_apple_intelligence_availability());
+        // PROOFREAD_TEXT and PROOFREAD_PROMPT (a file) try other text and instructions.
+        let mut dictated = std::env::var("PROOFREAD_TEXT").unwrap_or_else(|_| dictated.to_string());
+        // PROOFREAD_ALIKES (a sound_alikes.txt) runs the fixes first, as a dictation does.
+        if let Some(rules) = std::env::var("PROOFREAD_ALIKES").ok().and_then(|p| std::fs::read_to_string(p).ok()) {
+            dictated = crate::sound_alikes::apply(&dictated, &crate::sound_alikes::parse(&rules));
+            println!("after the fixes: {dictated}");
+        }
+        let prompt = std::env::var("PROOFREAD_PROMPT")
+            .ok()
+            .and_then(|p| std::fs::read_to_string(p).ok())
+            .unwrap_or_else(|| super::DEFAULT_INSTRUCTIONS.to_string());
         let t = std::time::Instant::now();
         let out = crate::apple_intelligence::process_text_with_system_prompt(
-            super::DEFAULT_INSTRUCTIONS,
+            &prompt,
             &format!("<transcript>\n{dictated}\n</transcript>"),
             0,
         );

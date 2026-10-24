@@ -6,6 +6,8 @@ import { Home as House, LayoutGrid, Video, Image as ImageIcon, Film, AudioLines,
 import { useSettings } from "../hooks/useSettings";
 import { formatShortcut } from "../lib/utils/keyboard";
 import { SECTIONS_CONFIG, type SidebarSection } from "./Sidebar";
+import GhostMark from "./icons/GhostMark";
+import { getVersion } from "@tauri-apps/api/app";
 import { useCaptures, type CaptureFile } from "./home/captures";
 import { useFavourites } from "./home/libraryModel";
 import { useDictations } from "./home/dictations";
@@ -74,9 +76,11 @@ export const Sidebar: React.FC<SideProps> = ({ page, filter, onPage, onFilter })
   const { entries: dictations } = useDictations();
   const { settings } = useSettings();
   const [chrome, setChrome] = useState(0);
+  const [version, setVersion] = useState("");
   const bindings = (settings?.bindings || {}) as Record<string, { current_binding: string }>;
 
   useEffect(() => {
+    getVersion().then(setVersion).catch(() => {});
     invoke<number>("extension_connections").then(setChrome).catch(() => {});
     const off = listen<number>("extension-connections", (e) => setChrome(e.payload));
     return () => {
@@ -117,6 +121,11 @@ export const Sidebar: React.FC<SideProps> = ({ page, filter, onPage, onFilter })
             Chrome {chrome ? "connected" : "not connected"}
           </span>
           <VpnStatus />
+        </div>
+        <div className="gus-sig" title="Ghostbar, by ghostavo">
+          <GhostMark size={15} />
+          <b>ghostbar</b>
+          {version && <small>{version}</small>}
         </div>
       </div>
     </aside>

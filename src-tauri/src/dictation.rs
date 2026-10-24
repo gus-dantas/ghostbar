@@ -1,9 +1,10 @@
 //! The live dictation editor. While Gus talks, a floating panel shows the live
 //! text and takes the keyboard, so a word can be fixed or typed without
 //! stopping. At each pause the stream is cut into a chunk and the accurate
-//! model re-hears it (refine.rs); an edited chunk is never overwritten. When he
-//! stops, Enter pastes the text, Cmd+Enter proofreads it first (proofread.rs).
-//! Talking again before pasting keeps adding to the same text.
+//! model re-hears it (refine.rs); an edited chunk is never overwritten. When the
+//! dictation key ends the recording, the panel sends the text for one check
+//! against Gus's words (proofread.rs) and it is pasted, no Enter needed. If the
+//! check fails, the text goes in as heard rather than being held back.
 
 use crate::managers::history::HistoryManager;
 use crate::settings::get_settings;
@@ -162,7 +163,7 @@ pub fn chunk(app: &AppHandle, pcm: Vec<f32>, text: String, last: bool) {
     }
 }
 
-/// The recording is saved; the text waits for Enter, Cmd+Enter or Escape.
+/// The recording is saved; the panel checks the text and pastes it.
 pub fn recorded(app: &AppHandle, recording: Option<String>) {
     ACTIVE.store(false, Ordering::Release);
     if let Some(name) = recording {
@@ -275,6 +276,7 @@ fn show_panel(app: &AppHandle) {
         }
         let _ = tauri::WebviewWindowBuilder::new(app, LABEL, WebviewUrl::App("src/dictation/index.html".into()))
             .title("Ghostbar Dictation")
+            .theme(Some(tauri::Theme::Light))
             .position(x, y)
             .inner_size(SIZE.0, SIZE.1)
             .decorations(false)
@@ -399,13 +401,13 @@ pub fn dictation_set_live_editor(app: AppHandle, enabled: bool) {
     }
 }
 
-/// Enter (proofread false) or Cmd+Enter (true): paste into the app in front.
+/// The key ended the recording (or Enter was pressed): check once, paste.
 #[tauri::command]
 #[specta::specta]
 pub async fn dictation_finish(app: AppHandle, text: String, proofread: bool) -> Result<(), String> {
     let raw = tidy(&text);
     let heard = session_text();
-    info!("dictation: {} with {} chars (heard {})", if proofread { "Cmd+Enter" } else { "Enter" }, raw.chars().count(), heard.chars().count());
+    info!("dictation: finish{} with {} chars (heard {})", if proofread { " + check" } else { "" }, raw.chars().count(), heard.chars().count());
     if raw.is_empty() {
         if !heard.is_empty() {
             warn!("dictation: the panel was empty but {} chars were heard; kept in History", heard.chars().count());
@@ -414,19 +416,25 @@ pub async fn dictation_finish(app: AppHandle, text: String, proofread: bool) -> 
         close(&app);
         return Ok(());
     }
-    let output = if proofread {
+    // The words the model always mishears are fixed first (sound_alikes.txt),
+    // so the check starts from the right names.
+    let fixed = crate::sound_alikes::fix(&app, &raw);
+    let output = if proofread && crate::proofread::engine(&app) != "none" {
         set_phase(&app, "proofreading");
-        match crate::proofread::proofread(&app, &raw).await {
+        match crate::proofread::proofread(&app, &fixed).await {
             Ok(t) if !t.is_empty() => t,
-            Ok(_) => raw.clone(),
+            Ok(_) => fixed.clone(),
+            // Nothing waits on a key any more, so a failed check pastes the
+            // text as heard instead of holding it back.
             Err(e) => {
-                set_phase(&app, "review");
-                return Err(e);
+                warn!("dictation: check failed, pasting as heard: {e}");
+                fixed.clone()
             }
         }
     } else {
-        raw.clone()
+        fixed.clone()
     };
+    let proofread = output != raw;
     save_history(&app, &raw, proofread.then_some(output.as_str()));
     close(&app);
     // The panel lets go of the keyboard; the app underneath takes it back.

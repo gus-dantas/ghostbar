@@ -940,6 +940,19 @@ pub fn get_default_settings() -> AppSettings {
             current_binding: default_post_process_shortcut.to_string(),
         },
     );
+    // The same dictation on the right-hand Option, for the laptop: either key
+    // starts it, either key ends it (handler.rs treats both as "transcribe").
+    #[cfg(target_os = "macos")]
+    bindings.insert(
+        "transcribe_right".to_string(),
+        ShortcutBinding {
+            id: "transcribe_right".to_string(),
+            name: "Transcribe (other key)".to_string(),
+            description: "A second dictation key, so either hand can start and stop it.".to_string(),
+            default_binding: "option_right".to_string(),
+            current_binding: "option_right".to_string(),
+        },
+    );
     bindings.insert(
         "cancel".to_string(),
         ShortcutBinding {

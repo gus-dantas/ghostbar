@@ -170,8 +170,12 @@
         "pressKeys": "Press keys...",
         "bindings": {
           "transcribe": {
-            "name": "Transcribe Shortcut",
-            "description": "The keyboard shortcut to record and transcribe your voice."
+            "name": "Dictation key",
+            "description": "Hold it and talk, or tap it, talk and tap again. The text is checked and pasted when you stop."
+          },
+          "transcribe_right": {
+            "name": "Second dictation key",
+            "description": "The same dictation on the other hand. Either key starts it and either key ends it."
           },
           "cancel": {
             "name": "Cancel Shortcut",

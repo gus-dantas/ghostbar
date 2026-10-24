@@ -664,12 +664,10 @@ pub fn change_theme_setting(app: AppHandle, theme: String) -> Result<(), String>
 /// bar and keeps the overlay in step. Linux is left to `data-theme` alone, since
 /// its window theming is backend-dependent and unreliable.
 #[cfg(any(target_os = "windows", target_os = "macos"))]
-pub fn apply_window_theme(app: &AppHandle, theme: Theme) {
-    let window_theme = match theme {
-        Theme::System => None,
-        Theme::Light => Some(tauri::Theme::Light),
-        Theme::Dark => Some(tauri::Theme::Dark),
-    };
+pub fn apply_window_theme(app: &AppHandle, _theme: Theme) {
+    // Ghostbar is paper-toned always (its brand's official ground), so the
+    // stored theme no longer changes the window.
+    let window_theme = Some(tauri::Theme::Light);
     if let Some(window) = app.get_webview_window("main") {
         if let Err(e) = window.set_theme(window_theme) {
             warn!("Failed to apply window theme: {}", e);

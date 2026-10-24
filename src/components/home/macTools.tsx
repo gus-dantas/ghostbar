@@ -1,11 +1,10 @@
 // The Mac switches Ghostbar took over from separate apps: the VPN (exit
-// country), keeping Teams available (was MouseJiggler) and staying awake with
-// the lid closed (was Insone). Shared by the sidebar and Today.
+// country) and Awake, one switch for what MouseJiggler (Teams stays Available)
+// and Insone (no sleep with the lid closed) did. Shared by the sidebar and Today.
 import React, { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { CheckMenuItem, Menu, MenuItem, PredefinedMenuItem } from "@tauri-apps/api/menu";
-import { Globe, MousePointer2, Zap, MoonStar } from "lucide-react";
 
 export interface VpnCountry {
   code: string;
@@ -19,6 +18,7 @@ export interface VpnState {
   countries: VpnCountry[];
 }
 export interface MacTools {
+  awake: boolean;
   jiggler: boolean;
   lid_awake: boolean | null;
   lid_rule: boolean;
@@ -85,12 +85,12 @@ const Switch: React.FC<{ on: boolean; busy?: boolean }> = ({ on, busy }) => (
   <span className={`mac-switch${on ? " on" : ""}${busy ? " busy" : ""}`} aria-hidden />
 );
 
-/** Today's row of Mac switches. */
+/** Today's two switches: Awake, then the VPN. */
 export const MacToggles: React.FC = () => {
   const vpn = useVpn();
   const tools = useMacTools();
   const [error, setError] = useState<string | null>(null);
-  const [lidBusy, setLidBusy] = useState(false);
+  const [busy, setBusy] = useState(false);
   useEffect(() => {
     const off = listen<string>("mac-tools-error", (e) => setError(e.payload));
     return () => {
@@ -98,52 +98,38 @@ export const MacToggles: React.FC = () => {
     };
   }, []);
 
-  const setLid = async (on: boolean) => {
+  const setAwake = async (on: boolean) => {
     setError(null);
-    setLidBusy(true);
+    setBusy(true);
     try {
-      await invoke("mac_set_lid_awake", { on });
+      await invoke("mac_set_awake", { on });
     } catch (e) {
       setError(String(e));
     } finally {
-      setLidBusy(false);
+      setBusy(false);
     }
   };
 
   return (
     <>
-      <section className="mac-row" aria-label="Mac">
+      <section className="switches" aria-label="Mac">
+        {tools && (
+          <button
+            className="switch-cell"
+            disabled={busy}
+            onClick={() => void setAwake(!tools.awake)}
+            title="On: the Mac doesn't sleep, even with the lid closed, and Teams stays Available. Off: both relax."
+          >
+            <span className="t">☕ Awake</span>
+            <span className="v">{tools.awake ? "Won't sleep · Teams stays Available" : "Sleeps as usual"}</span>
+            <Switch on={tools.awake} busy={busy} />
+          </button>
+        )}
         {vpn && (
-          <button className={`mac-tile${vpn.phase === "on" ? " on" : ""}`} onClick={() => void pickVpn(vpn)} title={vpn.reason ?? "Where the Mac's internet exits"}>
-            <Globe size={16} />
-            <span className="t">VPN</span>
+          <button className="switch-cell" onClick={() => void pickVpn(vpn)} title={vpn.reason ?? "Where the Mac's internet exits"}>
+            <span className="t">🌍 VPN</span>
             <span className="v">{vpnLabel(vpn)}</span>
             <Switch on={vpn.phase === "on"} busy={vpnBusy(vpn)} />
-          </button>
-        )}
-        {tools && (
-          <button
-            className={`mac-tile${tools.jiggler ? " on" : ""}`}
-            onClick={() => void invoke("mac_set_keep_available", { on: !tools.jiggler })}
-            title="While you're away, the pointer moves one pixel now and then so Teams stays Available"
-          >
-            <MousePointer2 size={16} />
-            <span className="t">Keep Teams available</span>
-            <span className="v">{tools.jiggler ? "On while you're away" : "Off"}</span>
-            <Switch on={tools.jiggler} />
-          </button>
-        )}
-        {tools && (
-          <button
-            className={`mac-tile${tools.lid_awake ? " on" : ""}`}
-            disabled={tools.lid_awake === null || lidBusy}
-            onClick={() => void setLid(!tools.lid_awake)}
-            title="Keeps the Mac running with the lid closed (pmset disablesleep)"
-          >
-            {tools.lid_awake ? <Zap size={16} /> : <MoonStar size={16} />}
-            <span className="t">Awake with the lid closed</span>
-            <span className="v">{tools.lid_awake === null ? "Can't read it" : tools.lid_awake ? "Stays on" : "Sleeps as usual"}</span>
-            <Switch on={!!tools.lid_awake} busy={lidBusy} />
           </button>
         )}
       </section>

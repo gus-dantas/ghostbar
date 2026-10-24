@@ -14,6 +14,7 @@ mod dictation;
 mod proofread;
 mod refine;
 mod shell;
+mod sound_alikes;
 mod catalog;
 mod chinese_script;
 pub mod cli;
@@ -355,6 +356,16 @@ fn initialize_core_logic(app_handle: &AppHandle) {
             }
             id if id.starts_with("recent:") => shell::open_any(app, &id["recent:".len()..]),
             id if id.starts_with("vpn:") => vpn::select(app, &id["vpn:".len()..]),
+            "awake" => {
+                let on = !mac_tools::awake();
+                let app = app.clone();
+                std::thread::spawn(move || {
+                    if let Err(e) = mac_tools::set_awake(&app, on) {
+                        log::warn!("awake switch: {e}");
+                        let _ = app.emit("mac-tools-error", e);
+                    }
+                });
+            }
             "keep_available" => mac_tools::set_jiggler(app, !mac_tools::jiggler_on()),
             "lid_awake" => {
                 let on = mac_tools::lid_awake() != Some(true);
@@ -745,6 +756,7 @@ pub fn run(cli_args: CliArgs) {
             mac_tools::mac_tools_state,
             mac_tools::mac_set_keep_available,
             mac_tools::mac_set_lid_awake,
+            mac_tools::mac_set_awake,
             capture::take_screenshot,
             capture::toggle_screen_recording,
             capture::get_screen_recording_state,
@@ -1067,22 +1079,17 @@ pub fn run(cli_args: CliArgs) {
                 win_builder = win_builder.data_directory(data_dir.join("webview"));
             }
 
-            // A Mac window: title bar folded into the content, traffic lights
-            // over the sidebar, and the system's sidebar material behind it.
+            // A Mac window: title bar folded into the content and traffic lights
+            // over the sidebar. Ghostbar is paper-toned always, so the window is
+            // light and opaque whatever the Mac's appearance.
             #[cfg(target_os = "macos")]
             {
-                use tauri::window::{Effect, EffectState, EffectsBuilder};
                 win_builder = win_builder
                     .title_bar_style(tauri::TitleBarStyle::Overlay)
                     .hidden_title(true)
                     .traffic_light_position(tauri::LogicalPosition::new(18.0, 20.0))
-                    .transparent(true)
-                    .effects(
-                        EffectsBuilder::new()
-                            .effect(Effect::Sidebar)
-                            .state(EffectState::FollowsWindowActiveState)
-                            .build(),
-                    );
+                    .theme(Some(tauri::Theme::Light))
+                    .background_color(tauri::window::Color(242, 245, 244, 255));
             }
 
             // Only used on Windows, to disable WebView2 browser accelerators.

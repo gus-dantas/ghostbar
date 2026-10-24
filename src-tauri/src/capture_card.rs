@@ -145,6 +145,7 @@ fn present(app: &AppHandle, card: CardItem) {
             } else {
                 let _ = tauri::WebviewWindowBuilder::new(&handle, LABEL, WebviewUrl::App("src/card/index.html".into()))
                     .title("Ghostbar Capture")
+                    .theme(Some(tauri::Theme::Light))
                     .position(x, y)
                     .inner_size(SIZE.0, SIZE.1)
                     .decorations(false)

@@ -1,4 +1,6 @@
-//! Mac helpers that used to be separate apps.
+//! Mac helpers that used to be separate apps, shown as one switch: Awake.
+//! On, the Mac doesn't sleep (lid closed included) and Teams stays Available;
+//! off, both relax. The two mechanisms stay separate underneath.
 //!
 //! Keep Teams available (was Computer MouseJiggler): while it's on and Gus
 //! hasn't touched the keyboard or mouse for a while, the pointer moves one
@@ -37,6 +39,8 @@ static LID_AWAKE: AtomicI8 = AtomicI8::new(-1);
 
 #[derive(Clone, Serialize, Type)]
 pub struct MacTools {
+    /// Either half is on: what the Awake switch shows.
+    pub awake: bool,
     pub jiggler: bool,
     /// None when pmset couldn't be read.
     pub lid_awake: Option<bool>,
@@ -56,8 +60,15 @@ pub fn lid_awake() -> Option<bool> {
     }
 }
 
+/// Awake shows on while anything keeps the Mac up, so switching it off
+/// always relaxes both halves.
+pub fn awake() -> bool {
+    jiggler_on() || lid_awake() == Some(true)
+}
+
 pub fn state() -> MacTools {
     MacTools {
+        awake: awake(),
         jiggler: jiggler_on(),
         lid_awake: lid_awake(),
         lid_rule: std::path::Path::new(SUDOERS_RULE).exists(),
@@ -148,6 +159,15 @@ pub fn set_lid_awake(app: &AppHandle, on: bool) -> Result<(), String> {
     })
 }
 
+/// Awake: both halves on, or both off. The jiggler always follows; the lid
+/// half reports why it couldn't (usually the one-time sudo rule).
+pub fn set_awake(app: &AppHandle, on: bool) -> Result<(), String> {
+    set_jiggler(app, on);
+    let lid = set_lid_awake(app, on);
+    changed(app);
+    lid
+}
+
 /// At launch: start the jiggler if it was on, and keep the lid state current
 /// (Insone or the Terminal can change it too).
 pub fn start(app: &AppHandle) {
@@ -177,6 +197,12 @@ pub fn mac_tools_state() -> MacTools {
 #[specta::specta]
 pub fn mac_set_keep_available(app: AppHandle, on: bool) {
     set_jiggler(&app, on);
+}
+
+#[tauri::command]
+#[specta::specta]
+pub async fn mac_set_awake(app: AppHandle, on: bool) -> Result<(), String> {
+    tauri::async_runtime::spawn_blocking(move || set_awake(&app, on)).await.map_err(|e| e.to_string())?
 }
 
 #[tauri::command]

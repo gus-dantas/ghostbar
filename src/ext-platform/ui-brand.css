@@ -1,20 +1,39 @@
 
-/* ---- Ghostbar (app only): the ghostavo.com dark palette over the extension's ui.css.
+/* ---- Ghostbar (app only): the GhostAvo paper palette over the extension's ui.css.
    scripts/sync-extension.mjs appends this file to src/ext/ui.css on every sync, so the
-   shared pages and the floating panels match the app while the extension keeps its own. ---- */
+   shared pages and the floating panels match the app while the extension keeps its own.
+   Teal is a field with ink on it; orange is only a recording. ---- */
 @font-face { font-family: "IBM Plex Mono"; font-weight: 400; font-display: swap; src: url(../assets/fonts/ibm-plex-mono-400-latin.woff2) format("woff2"); }
 :root {
-  --bg: #0A1413;
-  --panel: #0F1C1B;
-  --panel-2: #152322;
-  --line: #1F2F2E;
-  --text: #E8F1F0;
-  --muted: #93A5A3;
+  --bg: #F2F5F4;
+  --panel: #FBFCFC;
+  --panel-2: #E7EDEB;
+  --line: rgba(16, 32, 31, .16);
+  --text: #10201F;
+  --muted: #55615F;
   --accent: #50C1B1;
-  --accent-2: #6FD0C2;
-  --danger: #FF7A85;
+  --accent-2: #5FC8B9;
+  --accent-ink: #1C6B61;
+  --danger: #B42340;
+  --radius: 4px;
   --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
 }
-.btn:hover { background: #1F2F2E; }
-.btn.primary { color: #0A1413; }
-.icon-btn[aria-pressed="true"] { color: #0A1413; }
+.btn:hover { background: #DCE4E1; }
+.btn.primary { color: #10201F; }
+.icon-btn[aria-pressed="true"] { color: #10201F; }
+.text-btn:hover { color: var(--text); }
+#toast { background: #10201F; color: #F2F5F4; border-radius: 4px; box-shadow: 0 8px 24px rgba(16, 32, 31, .22); }
+#toast.error { background: var(--danger); color: #fff; }
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-thumb { background: rgba(16, 32, 31, .18); border-radius: 6px; border: 3px solid transparent; background-clip: content-box; }
+/* The editor and video pages load their own stylesheet after this one, so these carry an
+   html prefix to win: the board sits on paper with a soft shadow, selected things are ink. */
+html .swatch { border-color: rgba(16, 32, 31, .2); }
+html .swatch[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--panel), 0 0 0 4px #10201F; }
+html #viewport { background-image: radial-gradient(rgba(16, 32, 31, .07) 1px, transparent 1px); }
+html #board { box-shadow: 0 0 0 1px rgba(16, 32, 31, .12), 0 12px 32px rgba(16, 32, 31, .18); }
+html .seg button { border-radius: 4px; }
+html .seg button[aria-checked="true"] { color: #10201F; }
+html .err { color: var(--danger); }
+html video { border-radius: 3px; box-shadow: 0 0 0 1px rgba(16, 32, 31, .12), 0 12px 32px rgba(16, 32, 31, .18); }

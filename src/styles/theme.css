@@ -1,79 +1,19 @@
-/* Ghostbar colours: the ghostavo.com system, as in Overload. Cool off-white and deep
-   teal-black, teal as the signature (the selection and the one main action), slate as its
-   counterpart, orange only for a recording. */
+/* Ghostbar colours: the GhostAvo palette on its official paper ground (design/mark/).
+   One palette, always: Ghostbar stays paper-toned whatever the Mac's appearance.
+   Teal is a field colour (a filled tile, a selection, a switch that is on) with ink on it;
+   when teal has to be text it is the darker --color-logo-primary. Orange is only a recording. */
 
 :root {
-  /* Palette source of truth. Each themed color is defined once as a
-     light/dark pair; the active tokens below and the `data-theme` overrides
-     in App.css reference these, so a hex value lives in exactly one place. */
-  --light-color-text: #10201F;
-  --light-color-background: #F6F9F9;
-  --light-color-logo-primary: #1E5F58;
-  --light-color-logo-stroke: #10201F;
+  color-scheme: light;
 
-  --dark-color-text: #E8F1F0;
-  --dark-color-background: #0A1413;
-  --dark-color-logo-primary: #50C1B1;
-  --dark-color-logo-stroke: #E8F1F0;
-
-  /* Semantic status colors. First used by SecureInputWarning; intended to
-     replace the ad-hoc yellow-500/red-500 usages (e.g. ui/Alert.tsx) over
-     time so status styling is themeable from one place. */
-  --light-color-warning: #B7830F;
-  --light-color-error: #B42340;
-  --dark-color-warning: #E3B341;
-  --dark-color-error: #FF7A85;
-
-  /* Tokens that do not change between light and dark */
+  --color-text: #10201F;
+  --color-background: #F2F5F4;
+  /* Teal as text and icons on paper (5.7:1); the field teal is --gus-teal in gus.css. */
+  --color-logo-primary: #1C6B61;
+  --color-logo-stroke: #10201F;
   --color-background-ui: var(--color-logo-primary);
-  --color-text-stroke: #f6f6f6;
-  --color-mid-gray: #7F908E;
-
-  /* Active palette — defaults to light, follows the OS via the media query
-     below, or is forced by `data-theme` (see the overrides below). */
-  --color-text: var(--light-color-text);
-  --color-background: var(--light-color-background);
-  --color-logo-primary: var(--light-color-logo-primary);
-  --color-logo-stroke: var(--light-color-logo-stroke);
-  --color-warning: var(--light-color-warning);
-  --color-error: var(--light-color-error);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-text: var(--dark-color-text);
-    --color-background: var(--dark-color-background);
-    --color-logo-primary: var(--dark-color-logo-primary);
-    --color-logo-stroke: var(--dark-color-logo-stroke);
-    --color-warning: var(--dark-color-warning);
-    --color-error: var(--dark-color-error);
-  }
-}
-
-/*
- * Explicit theme override, driven by the `theme` setting via
- * `document.documentElement.dataset.theme`. When set, the higher-specificity
- * attribute selectors win over the `prefers-color-scheme` media query above,
- * so a user can keep Ghostbar light or dark regardless of the OS setting.
- * `system` (or no attribute) leaves the OS in charge.
- *
- * Lives here (not in App.css) so every window that imports the shared palette —
- * the settings window and the recording overlay alike — honours the override.
- */
-:root[data-theme="light"] {
-  --color-text: var(--light-color-text);
-  --color-background: var(--light-color-background);
-  --color-logo-primary: var(--light-color-logo-primary);
-  --color-logo-stroke: var(--light-color-logo-stroke);
-  --color-warning: var(--light-color-warning);
-  --color-error: var(--light-color-error);
-}
-
-:root[data-theme="dark"] {
-  --color-text: var(--dark-color-text);
-  --color-background: var(--dark-color-background);
-  --color-logo-primary: var(--dark-color-logo-primary);
-  --color-logo-stroke: var(--dark-color-logo-stroke);
-  --color-warning: var(--dark-color-warning);
-  --color-error: var(--dark-color-error);
+  --color-text-stroke: #F2F5F4;
+  --color-mid-gray: #5F6C6A;
+  --color-warning: #9A6A06;
+  --color-error: #B42340;
 }

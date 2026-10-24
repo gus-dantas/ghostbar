@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { getCurrentWindow } from "@tauri-apps/api/window";
-import { Camera, AppWindow, Monitor, Video, Chrome, ScanText, Copy } from "lucide-react";
+import { Copy } from "lucide-react";
 import { writeText } from "@tauri-apps/plugin-clipboard-manager";
 import { useSettings } from "../../hooks/useSettings";
 import { CaptureCard, captureTitle, formatWhen, useCaptures } from "./captures";
@@ -24,14 +24,11 @@ export const HomePage: React.FC<{ onOpenLibrary: () => void; onOpenDictation: (i
   const { entries: dictations } = useDictations();
   const [copiedId, setCopiedId] = useState<number | null>(null);
   const { settings } = useSettings();
-  const [chrome, setChrome] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const startedHere = useRef(false);
   const bindings = (settings?.bindings || {}) as Record<string, { current_binding: string }>;
 
   useEffect(() => {
-    invoke<number>("extension_connections").then(setChrome).catch(() => {});
-    const off = listen<number>("extension-connections", (e) => setChrome(e.payload));
     const back = () => {
       if (!startedHere.current) return;
       startedHere.current = false;
@@ -40,7 +37,6 @@ export const HomePage: React.FC<{ onOpenLibrary: () => void; onOpenDictation: (i
     const offSaved = listen("capture-saved", back);
     const offText = listen("text-grab-done", back);
     return () => {
-      off.then((f) => f());
       offSaved.then((f) => f());
       offText.then((f) => f());
     };
@@ -61,15 +57,14 @@ export const HomePage: React.FC<{ onOpenLibrary: () => void; onOpenDictation: (i
     }, mode === "screen" ? 2000 : 20000);
   };
   const record = () => invoke("cast_open").catch((e) => setError(String(e)));
-  const recordTab = () => invoke("extension_record_tab").catch((e) => setError(String(e)));
 
-  const actions = [
-    { key: "record", icon: <Video size={18} />, title: "Cast", sub: "Screen and face, 16:9 or 9:16", keys: pretty(bindings.record_screen?.current_binding), onClick: record, primary: true },
-    { key: "area", icon: <Camera size={18} />, title: "Area", sub: "Screenshot", keys: pretty(bindings.screenshot_area?.current_binding), onClick: () => shoot("area") },
-    { key: "window", icon: <AppWindow size={18} />, title: "Window", sub: "Screenshot", keys: pretty(bindings.screenshot_window?.current_binding), onClick: () => shoot("window") },
-    { key: "screen", icon: <Monitor size={18} />, title: "Screen", sub: "Screenshot", keys: pretty(bindings.screenshot_screen?.current_binding), onClick: () => shoot("screen") },
-    { key: "text", icon: <ScanText size={18} />, title: "Text", sub: "Copy text or a table", keys: pretty(bindings.screenshot_text?.current_binding), onClick: () => shoot("text") },
-    { key: "tab", icon: <Chrome size={18} />, title: "Chrome tab", sub: chrome ? "Record in the extension" : "Open Chrome first", keys: "", onClick: recordTab, disabled: !chrome },
+  // Each key shows its shortcut: the window teaches the keys that make it unnecessary.
+  const keys = [
+    { key: "record", title: "Cast", sub: "Screen and face", keys: pretty(bindings.record_screen?.current_binding), onClick: record, cast: true },
+    { key: "area", title: "Area", sub: "Screenshot", keys: pretty(bindings.screenshot_area?.current_binding), onClick: () => shoot("area") },
+    { key: "window", title: "Window", sub: "Screenshot", keys: pretty(bindings.screenshot_window?.current_binding), onClick: () => shoot("window") },
+    { key: "screen", title: "Screen", sub: "Screenshot", keys: pretty(bindings.screenshot_screen?.current_binding), onClick: () => shoot("screen") },
+    { key: "text", title: "Text", sub: "Copy text or a table", keys: pretty(bindings.screenshot_text?.current_binding), onClick: () => shoot("text") },
   ];
 
   const capturedToday = files.filter((f) => isToday(f.modified)).length;
@@ -79,48 +74,12 @@ export const HomePage: React.FC<{ onOpenLibrary: () => void; onOpenDictation: (i
 
   return (
     <div className="gus-page">
-      <section className="gus-actions-grid">
-        {actions.map((a) => (
-          <button key={a.key} className={`gus-action${a.primary ? " primary" : ""}`} onClick={a.onClick} disabled={a.disabled}>
-            <span className="ic">{a.icon}</span>
-            <span className="t">{a.title}</span>
-            <span className="s">{a.sub}</span>
-            {a.keys && <span className="k">{a.keys}</span>}
-          </button>
-        ))}
-      </section>
-      {error && <p className="gus-error">{error}</p>}
+      <p className="today-sum">
+        {new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" })} · {capturedToday}{" "}
+        {capturedToday === 1 ? "capture" : "captures"} · {dictatedToday.length} {dictatedToday.length === 1 ? "dictation" : "dictations"} ·{" "}
+        {todayWords.toLocaleString()} words
+      </p>
       <MacToggles />
-
-
-      <div className="gus-sec-head">
-        <h2>{capturedToday ? "Captured today" : "Recent captures"}</h2>
-        {capturedToday > 0 && <span className="gus-count">{capturedToday}</span>}
-        <span className="flex-1" />
-        <button className="gus-link" onClick={onOpenLibrary}>
-          All in the library
-        </button>
-      </div>
-      {files.length === 0 ? (
-        <p className="gus-empty">Nothing yet. Record or take a screenshot and it shows up here.</p>
-      ) : (
-        <div className="gus-grid">
-          {files.slice(0, capturedToday ? Math.min(capturedToday, 8) : 4).map((f) => {
-            const m = meta[f.path];
-            const named = windowTitle(m);
-            const app = shortApp(m?.app);
-            return (
-              <CaptureCard
-                key={f.path}
-                file={f}
-                onChange={refresh}
-                title={named ?? undefined}
-                sub={named || app ? [captureTitle(f), app, formatWhen(f.modified)].filter(Boolean).join(" · ") : undefined}
-              />
-            );
-          })}
-        </div>
-      )}
 
       <div className="gus-sec-head">
         <h2>{dictatedToday.length ? "Dictated today" : "Recent dictations"}</h2>
@@ -131,7 +90,7 @@ export const HomePage: React.FC<{ onOpenLibrary: () => void; onOpenDictation: (i
         )}
         <span className="flex-1" />
         <button className="gus-link" onClick={() => onOpenDictation(null)}>
-          All dictations
+          Dictations
         </button>
       </div>
       {recentDictations.length === 0 ? (
@@ -161,6 +120,44 @@ export const HomePage: React.FC<{ onOpenLibrary: () => void; onOpenDictation: (i
           })}
         </div>
       )}
+      <div className="gus-sec-head">
+        <h2>{capturedToday ? "Captured today" : "Recent captures"}</h2>
+        {capturedToday > 0 && <span className="gus-count">{capturedToday}</span>}
+        <span className="flex-1" />
+        <button className="gus-link" onClick={onOpenLibrary}>
+          Library
+        </button>
+      </div>
+      <section className="keys compact" aria-label="Capture">
+        {keys.map((k) => (
+          <button key={k.key} className={`key${k.cast ? " cast" : ""}`} onClick={k.onClick} title={`${k.title}: ${k.sub}${k.keys ? ` (${k.keys})` : ""}`}>
+            <span className="k">{k.keys}</span>
+            <span className="t">{k.title}</span>
+          </button>
+        ))}
+      </section>
+      {error && <p className="gus-error">{error}</p>}
+      {files.length === 0 ? (
+        <p className="gus-empty">Nothing yet. Record or take a screenshot and it shows up here.</p>
+      ) : (
+        <div className="gus-grid">
+          {files.slice(0, capturedToday ? Math.min(capturedToday, 8) : 4).map((f) => {
+            const m = meta[f.path];
+            const named = windowTitle(m);
+            const app = shortApp(m?.app);
+            return (
+              <CaptureCard
+                key={f.path}
+                file={f}
+                onChange={refresh}
+                title={named ?? undefined}
+                sub={named || app ? [captureTitle(f), app, formatWhen(f.modified)].filter(Boolean).join(" · ") : undefined}
+              />
+            );
+          })}
+        </div>
+      )}
+
     </div>
   );
 };

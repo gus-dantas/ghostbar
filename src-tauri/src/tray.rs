@@ -21,8 +21,6 @@
 //! icon/menu/tooltip, so those must only ever be set through the applier.
 
 use crate::managers::history::{HistoryEntry, HistoryManager};
-use crate::managers::model::ModelManager;
-use crate::managers::transcription::TranscriptionManager;
 use crate::settings;
 use crate::tray_i18n::get_tray_translations;
 use log::{debug, error, info, trace, warn};
@@ -57,10 +55,6 @@ impl TrayIconState {
 struct MenuInputs {
     busy: bool,
     warning: bool,
-    model_loaded: bool,
-    selected_model: String,
-    /// `(id, name)` of downloaded models, sorted by name.
-    downloaded_models: Vec<(String, String)>,
     locale: String,
     /// `(binding id, keys)`, so each item shows the shortcut Gus really set.
     shortcuts: Vec<(String, String)>,
@@ -325,16 +319,6 @@ fn compute_desired(app: &AppHandle, icon_state: TrayIconState) -> TrayDesired {
     let settings = settings::get_settings(app);
     let theme = get_current_theme(app);
     let warning = crate::secure_input::tray_warning_active(app);
-    let model_loaded = app.state::<Arc<TranscriptionManager>>().is_model_loaded();
-
-    let mut downloaded_models: Vec<(String, String)> = app
-        .state::<Arc<ModelManager>>()
-        .get_available_models()
-        .into_iter()
-        .filter(|m| m.is_downloaded)
-        .map(|m| (m.id, m.name))
-        .collect();
-    downloaded_models.sort_by(|a, b| a.1.cmp(&b.1));
 
     let mut shortcuts: Vec<(String, String)> = settings
         .bindings
@@ -357,9 +341,6 @@ fn compute_desired(app: &AppHandle, icon_state: TrayIconState) -> TrayDesired {
         menu: MenuInputs {
             busy: icon_state.is_busy(),
             warning,
-            model_loaded,
-            selected_model: settings.selected_model,
-            downloaded_models,
             locale: settings.app_language,
             shortcuts,
             hold_to_talk: settings.shortcut_activation != settings::ShortcutActivation::Toggle,
@@ -587,9 +568,9 @@ fn shortcut_item(app: &AppHandle, id: &str, label: &str, keys: Option<&String>) 
 /// Builds the tray menu and tooltip for the given inputs. Pure with respect
 /// to app state: everything it depends on is in `inputs`.
 ///
-/// Laid out like a Mac menu bar app: the captures first, each with the
-/// shortcut it really has, then recent captures and the library, the speech
-/// model and settings, and the dictation status at the foot.
+/// Short, like a Mac menu bar app: Awake and the VPN first, then dictation,
+/// Cast and the captures (folded into one submenu, each with the shortcut it
+/// really has), the library and settings, and the dictation status at the foot.
 fn build_menu(app: &AppHandle, inputs: &MenuInputs) -> tauri::Result<(Menu<tauri::Wry>, String)> {
     let strings = get_tray_translations(Some(inputs.locale.clone()));
     let keys = |id: &str| inputs.shortcuts.iter().find(|(k, _)| k == id).map(|(_, v)| v);
@@ -615,71 +596,51 @@ fn build_menu(app: &AppHandle, inputs: &MenuInputs) -> tauri::Result<(Menu<tauri
         menu.append(&separator()?)?;
     }
 
-    let cast_label = if inputs.casting { "Stop Cast" } else { "Cast" };
-    menu.append(&shortcut_item(app, "capture_record", cast_label, keys("record_screen"))?)?;
-    menu.append(&shortcut_item(app, "capture_area", "Screenshot an area", keys("screenshot_area"))?)?;
-    menu.append(&shortcut_item(app, "capture_window", "Screenshot a window", keys("screenshot_window"))?)?;
-    menu.append(&shortcut_item(app, "capture_screen", "Screenshot the screen", keys("screenshot_screen"))?)?;
-    menu.append(&shortcut_item(app, "capture_text", "Text from screen", keys("screenshot_text"))?)?;
-    menu.append(&separator()?)?;
-
-    let recent = Submenu::with_id(app, "recent_submenu", "Recent captures", !inputs.recent.is_empty())?;
-    for (path, label) in &inputs.recent {
-        recent.append(&MenuItem::with_id(app, format!("recent:{path}"), label, true, None::<&str>)?)?;
-    }
-    if !inputs.recent.is_empty() {
-        recent.append(&separator()?)?;
-        recent.append(&MenuItem::with_id(app, "open_library", "Show all in the Library", true, None::<&str>)?)?;
-    }
-    menu.append(&recent)?;
-    menu.append(&MenuItem::with_id(app, "copy_last_transcript", "Copy last dictation", true, None::<&str>)?)?;
-    menu.append(&MenuItem::with_id(app, "open_library", "Open Library", true, Some("Cmd+L"))?)?;
-    menu.append(&separator()?)?;
-
+    // What Gus reaches for most comes first: Awake and the VPN. Captures fold
+    // into one submenu (he takes most screenshots with the Mac's own keys).
+    let awake = inputs.keep_available || inputs.lid_awake == Some(true);
+    menu.append(&CheckMenuItem::with_id(app, "awake", "☕  Awake", true, awake, None::<&str>)?)?;
     menu.append(&vpn_submenu(app, &inputs.vpn)?)?;
-    menu.append(&CheckMenuItem::with_id(app, "keep_available", "Keep Teams available", true, inputs.keep_available, None::<&str>)?)?;
-    menu.append(&CheckMenuItem::with_id(
-        app,
-        "lid_awake",
-        "Stay awake with the lid closed",
-        inputs.lid_awake.is_some(),
-        inputs.lid_awake == Some(true),
-        None::<&str>,
-    )?)?;
+    menu.append(&separator()?)?;
 
-    // The speech model, by name; switching while dictating would cut it off.
-    if !inputs.busy {
-        let name = inputs
-            .downloaded_models
-            .iter()
-            .find(|(id, _)| *id == inputs.selected_model)
-            .map(|(_, name)| name.clone())
-            .unwrap_or_else(|| strings.model.clone());
-        let models = Submenu::with_id(app, "model_submenu", format!("Speech model: {name}"), true)?;
-        for (id, name) in &inputs.downloaded_models {
-            let item = CheckMenuItem::with_id(app, format!("model_select:{id}"), name, true, *id == inputs.selected_model, None::<&str>)?;
-            models.append(&item)?;
+    menu.append(&MenuItem::with_id(app, "copy_last_transcript", "🎙  Copy last dictation", true, None::<&str>)?)?;
+    let cast_label = if inputs.casting { "⏹  Stop Cast" } else { "🎬  Cast" };
+    menu.append(&shortcut_item(app, "capture_record", cast_label, keys("record_screen"))?)?;
+    let capture = Submenu::with_id(app, "capture_submenu", "📸  Capture", true)?;
+    capture.append(&shortcut_item(app, "capture_area", "An area", keys("screenshot_area"))?)?;
+    capture.append(&shortcut_item(app, "capture_window", "A window", keys("screenshot_window"))?)?;
+    capture.append(&shortcut_item(app, "capture_screen", "The screen", keys("screenshot_screen"))?)?;
+    capture.append(&shortcut_item(app, "capture_text", "Text from the screen", keys("screenshot_text"))?)?;
+    if !inputs.recent.is_empty() {
+        capture.append(&separator()?)?;
+        capture.append(&MenuItem::with_id(app, "recent_header", "Recent", false, None::<&str>)?)?;
+        for (path, label) in &inputs.recent {
+            capture.append(&MenuItem::with_id(app, format!("recent:{path}"), label, true, None::<&str>)?)?;
         }
-        models.append(&separator()?)?;
-        models.append(&MenuItem::with_id(app, "unload_model", &strings.unload_model, inputs.model_loaded, None::<&str>)?)?;
-        menu.append(&models)?;
     }
+    menu.append(&capture)?;
+    menu.append(&MenuItem::with_id(app, "open_library", "🗂  Library", true, Some("Cmd+L"))?)?;
+    menu.append(&separator()?)?;
+
     #[cfg(target_os = "macos")]
     let (settings_accelerator, quit_accelerator) = (Some("Cmd+,"), Some("Cmd+Q"));
     #[cfg(not(target_os = "macos"))]
     let (settings_accelerator, quit_accelerator) = (Some("Ctrl+,"), Some("Ctrl+Q"));
-    menu.append(&MenuItem::with_id(app, "settings", "Settings…", true, settings_accelerator)?)?;
+    menu.append(&MenuItem::with_id(app, "settings", "⚙️  Settings…", true, settings_accelerator)?)?;
     menu.append(&separator()?)?;
 
-    let dictation = keys("transcribe").map(|k| glyphs(k)).unwrap_or_default();
+    let mut dictation = keys("transcribe").map(|k| glyphs(k)).unwrap_or_default();
+    if let Some(other) = keys("transcribe_right").map(|k| glyphs(k)).filter(|k| !k.is_empty() && !dictation.is_empty()) {
+        dictation = format!("{dictation} or {other}");
+    }
     let status = if inputs.busy {
         "Dictating…".to_string()
     } else if dictation.is_empty() {
         "Dictation has no shortcut".to_string()
     } else if inputs.hold_to_talk {
-        format!("Dictation ready · hold {dictation}")
+        format!("Hold {dictation} to dictate")
     } else {
-        format!("Dictation ready · press {dictation}")
+        format!("Press {dictation} to dictate")
     };
     menu.append(&MenuItem::with_id(app, "status", &status, false, None::<&str>)?)?;
     menu.append(&MenuItem::with_id(app, "quit", "Quit Ghostbar", true, quit_accelerator)?)?;
@@ -693,11 +654,11 @@ fn vpn_submenu(app: &AppHandle, phase: &crate::vpn::Phase) -> tauri::Result<Subm
     use crate::vpn::{country, Phase, COUNTRIES};
     let name = |code: &str| country(code).map(|c| format!("{} {}", c.flag, c.name)).unwrap_or_else(|| code.to_string());
     let (title, active, busy) = match phase {
-        Phase::Off => ("VPN: Off".to_string(), "off".to_string(), false),
-        Phase::Starting(code) => (format!("VPN: connecting to {}…", name(code)), code.clone(), true),
-        Phase::On(code) => (format!("VPN: {}", name(code)), code.clone(), false),
-        Phase::Stopping => ("VPN: turning off…".to_string(), String::new(), true),
-        Phase::Failed(_) => ("VPN: failed".to_string(), "off".to_string(), false),
+        Phase::Off => ("🌍  VPN: Off".to_string(), "off".to_string(), false),
+        Phase::Starting(code) => (format!("🌍  VPN: connecting to {}…", name(code)), code.clone(), true),
+        Phase::On(code) => (format!("🌍  VPN: {}", name(code)), code.clone(), false),
+        Phase::Stopping => ("🌍  VPN: turning off…".to_string(), String::new(), true),
+        Phase::Failed(_) => ("🌍  VPN: failed".to_string(), "off".to_string(), false),
     };
     let submenu = Submenu::with_id(app, "vpn_submenu", title, true)?;
     if let Phase::Failed(reason) = phase {
@@ -808,9 +769,6 @@ mod tests {
         MenuInputs {
             busy,
             warning: false,
-            model_loaded: true,
-            selected_model: "small".to_string(),
-            downloaded_models: vec![("small".to_string(), "Small".to_string())],
             locale: "en".to_string(),
             shortcuts: vec![("record_screen".to_string(), "ctrl_left+2".to_string())],
             hold_to_talk: true,

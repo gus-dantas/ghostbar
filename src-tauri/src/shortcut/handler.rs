@@ -34,6 +34,10 @@ pub fn handle_shortcut_event(
 ) {
     let settings = get_settings(app);
 
+    // The second dictation key is the same key to the coordinator, so a
+    // recording started with one hand can be stopped with the other.
+    let binding_id = if binding_id == "transcribe_right" { "transcribe" } else { binding_id };
+
     // Transcribe bindings are handled by the coordinator.
     if is_transcribe_binding(binding_id) {
         if let Some(coordinator) = app.try_state::<TranscriptionCoordinator>() {
