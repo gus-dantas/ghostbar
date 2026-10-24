@@ -6,6 +6,11 @@
 //! their own in the app's data folder (proofread_prompt.txt there), written
 //! from their own proofreading habits. The Custom Words list is added as the
 //! names to spell exactly.
+//!
+//! The check never changes the language: it is told the language the speaker
+//! started in, and an answer that comes back in another language (Apple's
+//! on-device model translates to English when it feels like it) or that grew
+//! or shrank too much is thrown away, and the text goes in as heard.
 
 use crate::settings::get_settings;
 use log::{info, warn};
@@ -66,23 +71,79 @@ fn apple_available() -> bool {
     }
 }
 
+/// The language a stretch of text starts in, between the two Gus speaks:
+/// the first sentence or so decides, so a Portuguese dictation with English
+/// words in it stays Portuguese.
+pub fn starting_language(text: &str) -> Option<&'static str> {
+    use whatlang::{Detector, Lang};
+    let start: String = text.chars().take(160).collect();
+    let info = Detector::with_allowlist(vec![Lang::Por, Lang::Eng]).detect(&start)?;
+    Some(match info.lang() {
+        Lang::Por => "pt",
+        _ => "en",
+    })
+}
+
+fn language_name(code: &str) -> &'static str {
+    if code == "pt" { "Brazilian Portuguese" } else { "English" }
+}
+
+/// Keeps the check only if it stayed in the speaker's language and about as long.
+fn keep(heard: &str, checked: &str, language: Option<&str>) -> Result<(), String> {
+    let (a, b) = (heard.chars().count() as f32, checked.chars().count() as f32);
+    if a >= 20.0 && (b < a * 0.5 || b > a * 1.6) {
+        return Err(format!("the check changed the length from {a} to {b} characters"));
+    }
+    if let (Some(want), Some(got)) = (language, starting_language(checked)) {
+        if want != got {
+            return Err(format!("the check answered in {} instead of {}", language_name(got), language_name(want)));
+        }
+    }
+    Ok(())
+}
+
 pub async fn proofread(app: &AppHandle, text: &str) -> Result<String, String> {
     let text = text.trim();
     if text.is_empty() {
         return Ok(String::new());
     }
     let started = Instant::now();
+    let language = starting_language(text);
     let user = format!("<transcript>\n{text}\n</transcript>");
-    let system = instructions(app);
+    let mut system = instructions(app);
+    if let Some(code) = language {
+        let name = language_name(code);
+        system.push_str(&format!(
+            "\n\nThis transcript starts in {name}. Write the result in {name}. Never translate it into another language."
+        ));
+    }
     let result = match anthropic_key(app) {
         Some(key) => claude(&key, &system, &user).await,
-        None => apple(&system, &user),
+        None => {
+            // The on-device model rewrites too freely ("Ótimo" became "Bom dia"),
+            // so it is held to the smallest edit.
+            system.push_str(
+                "\n\nBe conservative: change only punctuation, capitals, accents and words that were clearly misheard. Keep every other word exactly as he said it, including the first word.",
+            );
+            apple(&system, &user)
+        }
     };
-    match &result {
-        Ok(out) => info!("proofread {} → {} chars in {:?}", text.len(), out.len(), started.elapsed()),
-        Err(e) => warn!("proofread failed: {e}"),
+    match result {
+        Ok(out) => match keep(text, &out, language) {
+            Ok(()) => {
+                info!("proofread {} → {} chars in {:?}", text.len(), out.len(), started.elapsed());
+                Ok(out)
+            }
+            Err(why) => {
+                warn!("proofread discarded, {why}; the text goes in as heard");
+                Ok(text.to_string())
+            }
+        },
+        Err(e) => {
+            warn!("proofread failed: {e}");
+            Err(e)
+        }
     }
-    result
 }
 
 async fn claude(key: &str, system: &str, user: &str) -> Result<String, String> {
@@ -142,6 +203,26 @@ fn apple(system: &str, user: &str) -> Result<String, String> {
     {
         let _ = (system, user);
         Err("Add an Anthropic key in Post-processing to proofread".into())
+    }
+}
+
+#[cfg(test)]
+mod guard_tests {
+    use super::{keep, starting_language};
+
+    #[test]
+    fn the_language_he_started_in_wins() {
+        assert_eq!(starting_language("Ótimo, pode subir tudo no Github."), Some("pt"));
+        assert_eq!(starting_language("Can you upload everything to GitHub?"), Some("en"));
+        assert_eq!(starting_language("Eu queria Enable o Option da direita para poder falar no laptop"), Some("pt"));
+    }
+
+    #[test]
+    fn a_translated_check_is_thrown_away() {
+        let heard = "Ótimo, pode subir tudo no Github.";
+        assert!(keep(heard, "Great, can you upload everything to GitHub?", Some("pt")).is_err());
+        assert!(keep(heard, "Ótimo, pode subir tudo no GitHub.", Some("pt")).is_ok());
+        assert!(keep("uma frase bem longa que foi ditada aqui agora", "frase", Some("pt")).is_err());
     }
 }
 
